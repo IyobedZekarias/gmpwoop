@@ -670,6 +670,7 @@ am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
 LEXLIB
+WOOPING
 LEX_OUTPUT_ROOT
 LEX
 YFLAGS
@@ -1498,6 +1499,7 @@ Optional Features:
                           enable make rules and dependencies not useful (and
                           sometimes confusing) to the casual installer
   --enable-assert         enable ASSERT checking [default=no]
+  --enable-woop           enable woopping to check correctness of arithmetic operations
   --enable-alloca         how to get temp memory [default=reentrant]
   --enable-cxx            enable C++ support [default=no]
   --enable-assembly       enable the use of assembly loops [default=yes]
@@ -3725,6 +3727,25 @@ fi
   MAINT=$MAINTAINER_MODE_TRUE
 
 
+# Check whether --enable-woop was given.
+if test "${enable_woop+set}" = set; then :
+  enableval=$enable_woop; case $enableval in
+yes|no) ;;
+*) as_fn_error $? "bad value $enableval for --enable-woop, need yes or no" "$LINENO" 5 ;;
+esac
+else
+  enable_woop=no
+fi
+
+
+if test "$enable_woop" = "yes"; then
+
+WOOPING="#define WOOPING 1"
+echo "enabling wooping"
+
+else
+  WOOPING="#define WOOPING 0"
+fi
 
 
 # Check whether --enable-assert was given.
@@ -23788,6 +23809,7 @@ no) ;;
 #define GMP_LIMB_BITS 123
 $DEFN_LONG_LONG_LIMB
 #include "$srcdir/gmp-h.in"
+$WOOPING
 
 #ifndef __GMP_EXTERN_INLINE
 die die die
@@ -23998,6 +24020,7 @@ else
 #define GMP_LIMB_BITS 123
 $DEFN_LONG_LONG_LIMB
 #include "$srcdir/gmp-h.in"
+$WOOPING
 
 #include "$srcdir/gmp-impl.h"
 
@@ -24095,6 +24118,7 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 #define GMP_LIMB_BITS 123
 $DEFN_LONG_LONG_LIMB
 #include "$srcdir/gmp-h.in"
+$WOOPING
 
 #if ! _GMP_H_HAVE_FILE
 die die die
@@ -27404,6 +27428,7 @@ else
 #define GMP_LIMB_BITS 123
 $DEFN_LONG_LONG_LIMB
 #include \"$srcdir/gmp-h.in\"
+$WOOPING
 
 "; then :
 

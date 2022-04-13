@@ -549,6 +549,10 @@ __GMP_DECLSPEC void  __gmp_tmp_debug_free (const char *, int, int,
 #define ALLOC(x) ((x)->_mp_alloc)
 #define NUM(x) mpq_numref(x)
 #define DEN(x) mpq_denref(x)
+#if WOOPING
+#define WOOP(x) ((x)->woopval)
+#define WOOPB(x) ((x)->woopbase)
+#endif
 
 /* n-1 inverts any low zeros and the lowest one bit.  If n&(n-1) leaves zero
    then that lowest one bit must have been the only bit set.  n==0 will
@@ -4357,10 +4361,17 @@ typedef struct powers powers_t;
 #define mpn_compute_powtab __MPN(compute_powtab)
 __GMP_DECLSPEC size_t mpn_compute_powtab (powers_t *, mp_ptr, mp_size_t, int);
 #define   mpn_dc_set_str __MPN(dc_set_str)
-__GMP_DECLSPEC mp_size_t mpn_dc_set_str (mp_ptr, const unsigned char *, size_t, const powers_t *, mp_ptr);
+#if WOOPING
+  __GMP_DECLSPEC mp_woop_size_t mpn_dc_set_str(mp_ptr, const unsigned char *, size_t, const powers_t *, mp_ptr, mp_limb_t);
+#else
+  __GMP_DECLSPEC mp_size_t mpn_dc_set_str (mp_ptr, const unsigned char *, size_t, const powers_t *, mp_ptr);
+#endif
 #define   mpn_bc_set_str __MPN(bc_set_str)
-__GMP_DECLSPEC mp_size_t mpn_bc_set_str (mp_ptr, const unsigned char *, size_t, int);
-
+#if WOOPING
+  __GMP_DECLSPEC mp_woop_size_t mpn_bc_set_str(mp_ptr, const unsigned char *, size_t, int, mp_limb_t);
+#else
+  __GMP_DECLSPEC mp_size_t mpn_bc_set_str (mp_ptr, const unsigned char *, size_t, int);
+#endif
 
 /* __GMPF_BITS_TO_PREC applies a minimum 53 bits, rounds upwards to a whole
    limb and adds an extra limb.  __GMPF_PREC_TO_BITS drops that extra limb,

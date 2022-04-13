@@ -198,7 +198,8 @@ MPZ_OBJECTS = mpz/abs$U.lo mpz/add$U.lo mpz/add_ui$U.lo			\
   mpz/import$U.lo mpz/init$U.lo mpz/init2$U.lo mpz/inits$U.lo		\
   mpz/inp_raw$U.lo mpz/inp_str$U.lo mpz/invert$U.lo			\
   mpz/ior$U.lo mpz/iset$U.lo mpz/iset_d$U.lo mpz/iset_si$U.lo		\
-  mpz/iset_str$U.lo mpz/iset_ui$U.lo mpz/jacobi$U.lo mpz/kronsz$U.lo	\
+  mpz/iset_str$U.lo mpz/gen_wb$U.lo mpz/set_woopbase$U.lo mpz/set_woopbases$U.lo \
+  mpz/get_wv$U.lo mpz/check_woop$U.lo mpz/iset_ui$U.lo mpz/jacobi$U.lo mpz/kronsz$U.lo	\
   mpz/kronuz$U.lo mpz/kronzs$U.lo mpz/kronzu$U.lo			\
   mpz/lcm$U.lo mpz/lcm_ui$U.lo mpz/limbs_finish$U.lo			\
   mpz/limbs_modify$U.lo mpz/limbs_read$U.lo mpz/limbs_write$U.lo	\

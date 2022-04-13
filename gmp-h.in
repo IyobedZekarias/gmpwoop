@@ -58,6 +58,7 @@ see https://www.gnu.org/licenses/.  */
 /* Instantiated by configure. */
 #if ! defined (__GMP_WITHIN_CONFIGURE)
 @DEFN_LONG_LONG_LIMB@
+@WOOPING@
 #define __GMP_LIBGMP_DLL  @LIBGMP_DLL@
 #endif
 
@@ -155,7 +156,21 @@ typedef struct
 				   last field points to.  If _mp_size is
 				   negative this is a negative number.  */
   mp_limb_t *_mp_d;		/* Pointer to the limbs.  */
+  #if WOOPING
+  mp_limb_t woopval;
+  mp_limb_t woopbase;
+  #endif
 } __mpz_struct;
+
+
+#if WOOPING
+typedef struct
+{
+  int size;
+  mp_limb_t woopval;
+  mp_limb_t woopbase;
+} mp_woop_size_t;
+#endif
 
 #endif /* __GNU_MP__ */
 
@@ -871,6 +886,24 @@ __GMP_DECLSPEC int mpz_init_set_str (mpz_ptr, const char *, int);
 
 #define mpz_init_set_ui __gmpz_init_set_ui
 __GMP_DECLSPEC void mpz_init_set_ui (mpz_ptr, unsigned long int);
+
+#define mpz_gen_woopbase __gmpz_gen_woopbase
+  __GMP_DECLSPEC mp_limb_t mpz_gen_woopbase();
+
+#define mpz_set_woopbases __gmpz_set_woopbases
+  __GMP_DECLSPEC mp_limb_t mpz_set_woopbases(mp_limb_t, mpz_ptr, ...) __GMP_NOTHROW;
+
+#define mpz_set_woopbase __gmpz_set_woopbase
+  __GMP_DECLSPEC mp_limb_t mpz_set_woopbase(mp_limb_t, mpz_ptr) __GMP_NOTHROW;
+
+#define mpz_get_woopval __gmpz_get_woopval
+  __GMP_DECLSPEC mp_limb_t mpz_get_woopval(mp_ptr, long long, mp_limb_t);
+
+#define mpz_get_wv __gmpz_get_wv
+  __GMP_DECLSPEC mp_limb_t mpz_get_wv(mpz_srcptr);
+
+#define mpz_check_woop __gmpz_check_woop
+  __GMP_DECLSPEC void mpz_check_woop(mpz_ptr); 
 
 #define mpz_inp_raw __gmpz_inp_raw
 #ifdef _GMP_H_HAVE_FILE
@@ -1592,7 +1625,11 @@ __GMP_DECLSPEC mp_bitcnt_t mpn_scan0 (mp_srcptr, mp_bitcnt_t) __GMP_ATTRIBUTE_PU
 __GMP_DECLSPEC mp_bitcnt_t mpn_scan1 (mp_srcptr, mp_bitcnt_t) __GMP_ATTRIBUTE_PURE;
 
 #define mpn_set_str __MPN(set_str)
-__GMP_DECLSPEC mp_size_t mpn_set_str (mp_ptr, const unsigned char *, size_t, int);
+#if WOOPING
+  __GMP_DECLSPEC mp_woop_size_t mpn_set_str(mp_ptr, const unsigned char *, size_t, int, mp_limb_t);
+#else 
+  __GMP_DECLSPEC mp_size_t mpn_set_str (mp_ptr, const unsigned char *, size_t, int);
+#endif
 
 #define mpn_sizeinbase __MPN(sizeinbase)
 __GMP_DECLSPEC size_t mpn_sizeinbase (mp_srcptr, mp_size_t, int);

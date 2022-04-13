@@ -120,6 +120,9 @@ struct speed_params {
   mp_size_t  align_wp2; /* intended alignment of wp2 */
   mp_ptr     xp_block;	/* first special SPEED_BLOCK_SIZE block */
   mp_ptr     yp_block;	/* second special SPEED_BLOCK_SIZE block */
+  #if WOOPING
+  mp_limb_t  woopbase;  /* base for wooping */
+  #endif
 
   double     time_divisor; /* optionally set by the speed routine */
 

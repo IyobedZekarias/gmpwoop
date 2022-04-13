@@ -2734,12 +2734,20 @@ speed_mpn_get_str (struct speed_params *s)
 double
 speed_mpn_set_str (struct speed_params *s)
 {
+  #if WOOPING
+  SPEED_ROUTINE_MPN_SET_STR_CALL(mpn_set_str(wp, xp, s->size, base, s->woopbase));
+#else
   SPEED_ROUTINE_MPN_SET_STR_CALL (mpn_set_str (wp, xp, s->size, base));
+  #endif
 }
 double
 speed_mpn_bc_set_str (struct speed_params *s)
 {
+#if WOOPING
+  SPEED_ROUTINE_MPN_SET_STR_CALL(mpn_bc_set_str(wp, xp, s->size, base, s->woopbase));
+#else
   SPEED_ROUTINE_MPN_SET_STR_CALL (mpn_bc_set_str (wp, xp, s->size, base));
+#endif
 }
 
 double

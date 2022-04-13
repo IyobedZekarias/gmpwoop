@@ -136,8 +136,24 @@ mpz_set_str (mpz_ptr x, const char *str, int base)
   MPZ_NEWALLOC (x, xsize);
 
   /* Convert the byte array in base BASE to our bignum format.  */
+
+#if WOOPING
+  mp_limb_t r;
+  if (!WOOPB(x))
+    r = mpz_gen_woopbase();
+  else
+    r = WOOPB(x);
+  mp_woop_size_t woop_size = mpn_set_str(PTR(x), (unsigned char *)begs, str_size, base, r);
+  xsize = woop_size.size;
+  SIZ(x) = negative ? -xsize : xsize;
+  if (mpz_cmp_si(x, 1) < 0 && woop_size.woopval)
+    woop_size.woopval = r - woop_size.woopval;
+  WOOP(x) = woop_size.woopval;
+  WOOPB(x) = r;
+#else
   xsize = mpn_set_str (PTR (x), (unsigned char *) begs, str_size, base);
   SIZ (x) = negative ? -xsize : xsize;
+#endif
 
   TMP_FREE;
   return 0;

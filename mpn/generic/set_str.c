@@ -65,8 +65,13 @@ see https://www.gnu.org/licenses/.  */
 
 #include "gmp-impl.h"
 
+#if WOOPING
+mp_woop_size_t
+mpn_set_str(mp_ptr rp, const unsigned char *str, size_t str_len, int base, mp_limb_t woopbase)
+#else
 mp_size_t
 mpn_set_str (mp_ptr rp, const unsigned char *str, size_t str_len, int base)
+#endif
 {
   if (POW2_P (base))
     {
@@ -98,12 +103,22 @@ mpn_set_str (mp_ptr rp, const unsigned char *str, size_t str_len, int base)
 	}
 
       if (res_digit != 0)
-	rp[size++] = res_digit;
+	      rp[size++] = res_digit;
+  #if WOOPING
+      mp_woop_size_t woop_size; 
+      woop_size.size = size;
+      return woop_size; 
+  #else
       return size;
+  #endif
     }
 
   if (BELOW_THRESHOLD (str_len, SET_STR_PRECOMPUTE_THRESHOLD))
+  #if WOOPING
+    return mpn_bc_set_str(rp, str, str_len, base, woopbase);
+#else
     return mpn_bc_set_str (rp, str, str_len, base);
+  #endif
   else
     {
       mp_ptr powtab_mem, tp;
@@ -128,16 +143,33 @@ mpn_set_str (mp_ptr rp, const unsigned char *str, size_t str_len, int base)
       pt = powtab + n_pows;
 
       tp = TMP_BALLOC_LIMBS (mpn_dc_set_str_itch (un));
+#if WOOPING
+      mp_woop_size_t temp;
+      temp = mpn_dc_set_str(rp, str, str_len, pt, tp, woopbase);
+      size = temp.size;
+
+      TMP_FREE;
+      mp_woop_size_t woop_size;
+      woop_size.size = size;
+      return woop_size;
+#else
       size = mpn_dc_set_str (rp, str, str_len, pt, tp);
 
       TMP_FREE;
       return size;
+#endif
     }
 }
 
+#if WOOPING
+mp_woop_size_t
+mpn_dc_set_str(mp_ptr rp, const unsigned char *str, size_t str_len,
+               const powers_t *powtab, mp_ptr tp, mp_limb_t woopbase)
+#else
 mp_size_t
 mpn_dc_set_str (mp_ptr rp, const unsigned char *str, size_t str_len,
 		const powers_t *powtab, mp_ptr tp)
+#endif
 {
   size_t len_lo, len_hi;
   mp_limb_t cy;
@@ -148,19 +180,41 @@ mpn_dc_set_str (mp_ptr rp, const unsigned char *str, size_t str_len,
   if (str_len <= len_lo)
     {
       if (BELOW_THRESHOLD (str_len, SET_STR_DC_THRESHOLD))
-	return mpn_bc_set_str (rp, str, str_len, powtab->base);
+#if WOOPING
+        return mpn_bc_set_str(rp, str, str_len, powtab->base, woopbase);
+#else
+	      return mpn_bc_set_str (rp, str, str_len, powtab->base);
+#endif
       else
-	return mpn_dc_set_str (rp, str, str_len, powtab - 1, tp);
+#if WOOPING
+        return mpn_dc_set_str(rp, str, str_len, powtab - 1, tp, woopbase);
+#else
+	      return mpn_dc_set_str (rp, str, str_len, powtab - 1, tp);
+#endif
     }
 
   len_hi = str_len - len_lo;
   ASSERT (len_lo >= len_hi);
+  #if WOOPING
+  mp_woop_size_t temp;
+  #endif
 
   if (BELOW_THRESHOLD (len_hi, SET_STR_DC_THRESHOLD))
+#if WOOPING
+    temp = mpn_bc_set_str(tp, str, len_hi, powtab->base, woopbase);
+#else
     hn = mpn_bc_set_str (tp, str, len_hi, powtab->base);
+#endif
   else
+#if WOOPING
+    temp = mpn_dc_set_str(tp, str, len_hi, powtab - 1, rp, woopbase);
+#else
     hn = mpn_dc_set_str (tp, str, len_hi, powtab - 1, rp);
+#endif
 
+  #if WOOPING
+  hn = temp.size;
+  #endif
   sn = powtab->shift;
 
   if (hn == 0)
@@ -180,9 +234,21 @@ mpn_dc_set_str (mp_ptr rp, const unsigned char *str, size_t str_len,
 
   str = str + str_len - len_lo;
   if (BELOW_THRESHOLD (len_lo, SET_STR_DC_THRESHOLD))
+#if WOOPING
+    temp = mpn_bc_set_str(tp, str, len_lo, powtab->base, woopbase);
+#else
     ln = mpn_bc_set_str (tp, str, len_lo, powtab->base);
+#endif
   else
+#if WOOPING
+    temp = mpn_dc_set_str(tp, str, len_lo, powtab - 1, tp + powtab->n + sn + 1, woopbase);
+#else
     ln = mpn_dc_set_str (tp, str, len_lo, powtab - 1, tp + powtab->n + sn + 1);
+#endif
+
+#if WOOPING
+  ln = temp.size; 
+#endif
 
   if (ln != 0)
     {
@@ -190,11 +256,22 @@ mpn_dc_set_str (mp_ptr rp, const unsigned char *str, size_t str_len,
       mpn_incr_u (rp + ln, cy);
     }
   n = hn + powtab->n + sn;
+  #if WOOPING 
+  mp_woop_size_t woop_size;
+  woop_size.size = n - (rp[n - 1] == 0);
+  return woop_size;
+#else
   return n - (rp[n - 1] == 0);
+  #endif
 }
 
+#if WOOPING
+mp_woop_size_t
+mpn_bc_set_str(mp_ptr rp, const unsigned char *str, size_t str_len, int base, mp_limb_t woopbase)
+#else
 mp_size_t
 mpn_bc_set_str (mp_ptr rp, const unsigned char *str, size_t str_len, int base)
+#endif
 {
   mp_size_t size;
   size_t i;
@@ -204,6 +281,9 @@ mpn_bc_set_str (mp_ptr rp, const unsigned char *str, size_t str_len, int base)
   mp_limb_t big_base;
   int chars_per_limb;
   mp_limb_t res_digit;
+  #if WOOPING
+  mp_limb_t woop_digit = 0; 
+  #endif
 
   ASSERT (base >= 2);
   ASSERT (base < numberof (mp_bases));
@@ -214,79 +294,111 @@ mpn_bc_set_str (mp_ptr rp, const unsigned char *str, size_t str_len, int base)
 
   size = 0;
   for (i = chars_per_limb; i < str_len; i += chars_per_limb)
-    {
-      res_digit = *str++;
-      if (base == 10)
-	{ /* This is a common case.
-	     Help the compiler to avoid multiplication.  */
-	  for (j = MP_BASES_CHARS_PER_LIMB_10 - 1; j != 0; j--)
-	    res_digit = res_digit * 10 + *str++;
-	}
-      else
-	{
-	  for (j = chars_per_limb - 1; j != 0; j--)
-	    res_digit = res_digit * base + *str++;
-	}
-
-      if (size == 0)
-	{
-	  if (res_digit != 0)
-	    {
-	      rp[0] = res_digit;
-	      size = 1;
-	    }
-	}
-      else
-	{
-#if HAVE_NATIVE_mpn_mul_1c
-	  cy_limb = mpn_mul_1c (rp, rp, size, big_base, res_digit);
-#else
-	  cy_limb = mpn_mul_1 (rp, rp, size, big_base);
-	  cy_limb += mpn_add_1 (rp, rp, size, res_digit);
+  {
+    const unsigned char temp = *str++;
+    res_digit = temp;
+#if WOOPING
+    woop_digit = ((woop_digit * base) % woopbase + temp) % woopbase;
 #endif
-	  if (cy_limb != 0)
-	    rp[size++] = cy_limb;
-	}
+    if (base == 10)
+    { /* This is a common case.
+        Help the compiler to avoid multiplication.  */
+      for (j = MP_BASES_CHARS_PER_LIMB_10 - 1; j != 0; j--)
+      {
+        const unsigned char d = *str++;
+        res_digit = res_digit * 10 + d;
+#if WOOPING
+        woop_digit = ((woop_digit * 10) % woopbase + d) % woopbase;
+#endif
+      }
     }
+    else
+    {
+      for (j = chars_per_limb - 1; j != 0; j--)
+      {
+        const unsigned char d = *str++;
+        res_digit = res_digit * base + d;
+#if WOOPING
+        woop_digit = ((woop_digit * base) % woopbase + d) % woopbase;
+#endif
+      }
+    }
+
+    if (size == 0)
+    {
+      if (res_digit != 0)
+      {
+        rp[0] = res_digit;
+        size = 1;
+      }
+    }
+    else
+    {
+#if HAVE_NATIVE_mpn_mul_1c
+      cy_limb = mpn_mul_1c(rp, rp, size, big_base, res_digit);
+#else
+      cy_limb = mpn_mul_1(rp, rp, size, big_base);
+      cy_limb += mpn_add_1(rp, rp, size, res_digit);
+#endif
+      if (cy_limb != 0)
+      {
+        rp[size++] = cy_limb;
+      }
+    }
+  }
 
   big_base = base;
   res_digit = *str++;
+#if WOOPING
+  woop_digit = ((woop_digit * base) % woopbase + res_digit) % woopbase;
+#endif
   if (base == 10)
-    { /* This is a common case.
-	 Help the compiler to avoid multiplication.  */
-      for (j = str_len - (i - MP_BASES_CHARS_PER_LIMB_10) - 1; j > 0; j--)
-	{
-	  res_digit = res_digit * 10 + *str++;
-	  big_base *= 10;
-	}
-    }
-  else
+  { /* This is a common case.
+ Help the compiler to avoid multiplication.  */
+    for (j = str_len - (i - MP_BASES_CHARS_PER_LIMB_10) - 1; j > 0; j--)
     {
-      for (j = str_len - (i - chars_per_limb) - 1; j > 0; j--)
-	{
-	  res_digit = res_digit * base + *str++;
-	  big_base *= base;
-	}
+      const unsigned char d = *str++;
+      res_digit = res_digit * 10 + d;
+#if WOOPING
+      woop_digit = ((woop_digit * 10) % woopbase + d) % woopbase;
+#endif
+      big_base *= 10;
     }
+  }
+  else
+  {
+    for (j = str_len - (i - chars_per_limb) - 1; j > 0; j--)
+    {
+      const unsigned char d = *str++;
+      res_digit = res_digit * base + d;
+#if WOOPING
+      woop_digit = ((woop_digit * 10) % woopbase + d) % woopbase;
+#endif
+      big_base *= base;
+    }
+  }
 
   if (size == 0)
+  {
+    if (res_digit != 0)
     {
-      if (res_digit != 0)
-	{
-	  rp[0] = res_digit;
-	  size = 1;
-	}
+      rp[0] = res_digit;
+      size = 1;
     }
+  }
   else
-    {
+  {
 #if HAVE_NATIVE_mpn_mul_1c
-      cy_limb = mpn_mul_1c (rp, rp, size, big_base, res_digit);
+    cy_limb = mpn_mul_1c(rp, rp, size, big_base, res_digit);
 #else
-      cy_limb = mpn_mul_1 (rp, rp, size, big_base);
-      cy_limb += mpn_add_1 (rp, rp, size, res_digit);
+    cy_limb = mpn_mul_1(rp, rp, size, big_base);
+    cy_limb += mpn_add_1(rp, rp, size, res_digit);
 #endif
-      if (cy_limb != 0)
-	rp[size++] = cy_limb;
-    }
-  return size;
+    if (cy_limb != 0)
+      rp[size++] = cy_limb;
+  }
+  mp_woop_size_t woop_size;
+  woop_size.size = size;
+  woop_size.woopval = woop_digit;
+  return woop_size;
 }

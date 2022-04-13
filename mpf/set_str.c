@@ -281,7 +281,14 @@ mpf_set_str (mpf_ptr x, const char *str, int base)
 
     LIMBS_PER_DIGIT_IN_BASE (ma, str_size, base);
     mp = TMP_ALLOC_LIMBS (ma);
-    mn = mpn_set_str (mp, (unsigned char *) begs, str_size, base);
+#if WOOPING
+    mp_limb_t r = mpz_gen_woopbase();
+    mp_woop_size_t woop_size = mpn_set_str(mp, (unsigned char *)begs, str_size, base, r);
+    mn = woop_size.size;
+#else
+    mn = mpn_set_str(mp, (unsigned char *)begs, str_size, base);
+#endif
+    
 
     madj = 0;
     /* Ignore excess limbs in MP,MSIZE.  */
