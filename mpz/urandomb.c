@@ -44,4 +44,5 @@ mpz_urandomb (mpz_ptr rop, gmp_randstate_t rstate, mp_bitcnt_t nbits)
   _gmp_rand (rp, rstate, nbits);
   MPN_NORMALIZE (rp, size);
   SIZ (rop) = size;
+  WOOP(rop) = mpz_get_wv(rop);
 }

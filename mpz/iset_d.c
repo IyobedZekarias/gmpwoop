@@ -31,6 +31,22 @@ see https://www.gnu.org/licenses/.  */
 
 #include "gmp-impl.h"
 
+mp_limb_t mpz_initwb_set_d(mp_limb_t base, mpz_ptr dest, double val)
+{
+  #if WOOPING
+  if (!base)
+    base = mpz_gen_woopbase();
+
+  mpz_init_set_d(dest, val);
+
+  WOOP(dest) = mpz_get_woopval(PTR(dest), SIZ(dest), base);
+  WOOPB(dest) = base;
+  return base;
+  #else
+  return 0; 
+  #endif
+}
+
 void
 mpz_init_set_d (mpz_ptr dest, double val)
 {

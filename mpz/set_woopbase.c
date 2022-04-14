@@ -34,8 +34,12 @@ see https://www.gnu.org/licenses/.  */
 
 mp_limb_t mpz_set_woopbase(mp_limb_t a, mpz_ptr b) __GMP_NOTHROW
 {
+  #if WOOPING
   if (!a)
     a = mpz_gen_woopbase();
   WOOPB(b) = a;
   return a;
+  #else 
+  return 0
+  #endif
 }

@@ -29,12 +29,17 @@ see https://www.gnu.org/licenses/.  */
 #include "gmp-impl.h"
 
 mp_limb_t mpz_get_wv(mpz_srcptr a){
+  #if WOOPING
   return mpz_get_woopval(PTR(a), SIZ(a), WOOPB(a));
+  #else
+  return 0; 
+  #endif
 }
 
 mp_limb_t
 mpz_get_woopval(mp_ptr a, long long size, mp_limb_t base)
 {
+  #if WOOPING
   if(size == 0){
     return 0; 
   }
@@ -63,4 +68,7 @@ mpz_get_woopval(mp_ptr a, long long size, mp_limb_t base)
   }
 
   return val;
+  #else
+  return 0; 
+  #endif
 }

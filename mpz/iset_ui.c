@@ -31,6 +31,21 @@ see https://www.gnu.org/licenses/.  */
 
 #include "gmp-impl.h"
 
+mp_limb_t mpz_initwb_set_ui(mp_limb_t wb, mpz_ptr dest, unsigned long int val)
+{
+  #if WOOPING
+  mpz_init_set_ui(dest, val);
+  if (!wb)
+    wb = mpz_gen_woopbase();
+
+  WOOPB(dest) = wb;
+  WOOP(dest) = mpz_get_woopval(PTR(dest), SIZ(dest), wb);
+  return wb;
+  #else 
+  return 0; 
+  #endif
+}
+
 void
 mpz_init_set_ui (mpz_ptr dest, unsigned long int val)
 {

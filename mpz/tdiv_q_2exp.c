@@ -64,4 +64,8 @@ mpz_tdiv_q_2exp (mpz_ptr r, mpz_srcptr u, mp_bitcnt_t cnt)
     }
 
   SIZ(r) = un >= 0 ? rn : -rn;
+#if WOOPING
+  WOOPB(r) = WOOPB(u);
+  WOOP(r) = mpz_get_wv(r);
+#endif
 }

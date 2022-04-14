@@ -57,6 +57,18 @@ Error, need OPERATION_add_ui or OPERATION_sub_ui
 void
 FUNCTION (mpz_ptr w, mpz_srcptr u, unsigned long int vval)
 {
+#if WOOPING
+#ifdef OPERATION_add_ui
+  WOOP(w) = ((WOOP(u) % WOOPB(u)) + (vval % WOOPB(u))) % WOOPB(u);
+#endif
+#ifdef OPERATION_sub_ui
+  signed long mod = ((signed long)WOOP(u) - ((signed long)vval % WOOPB(u))) % (signed long)WOOPB(u);
+  if (mod < 0)
+    mod += WOOPB(u);
+
+  WOOP(w) = mod;
+#endif
+#endif
   mp_srcptr up;
   mp_ptr wp;
   mp_size_t usize, wsize;

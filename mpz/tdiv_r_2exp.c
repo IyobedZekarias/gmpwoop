@@ -73,4 +73,9 @@ mpz_tdiv_r_2exp (mpz_ptr res, mpz_srcptr in, mp_bitcnt_t cnt)
   if (res != in)
     MPN_COPY (PTR (res), PTR (in), limb_cnt);
   SIZ (res) = SIZ (in) >= 0 ? res_size : -res_size;
+
+#if WOOPING
+  WOOPB(res) = WOOPB(in);
+  WOOP(res) = mpz_get_wv(res);
+#endif
 }

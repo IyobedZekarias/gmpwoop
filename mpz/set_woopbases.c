@@ -34,6 +34,7 @@ see https://www.gnu.org/licenses/.  */
 
 mp_limb_t mpz_set_woopbases(mp_limb_t base, mpz_ptr x, ...) __GMP_NOTHROW
 {
+  #if WOOPING
   if (!base)
     base = mpz_gen_woopbase();
   va_list ap;
@@ -45,4 +46,7 @@ mp_limb_t mpz_set_woopbases(mp_limb_t base, mpz_ptr x, ...) __GMP_NOTHROW
     x = va_arg(ap, mpz_ptr);
   } while (x != NULL);
   return base;
+  #else 
+  return 0; 
+  #endif
 }

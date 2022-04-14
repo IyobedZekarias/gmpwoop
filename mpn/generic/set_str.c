@@ -397,8 +397,13 @@ mpn_bc_set_str (mp_ptr rp, const unsigned char *str, size_t str_len, int base)
     if (cy_limb != 0)
       rp[size++] = cy_limb;
   }
+
+  #if WOOPING
   mp_woop_size_t woop_size;
   woop_size.size = size;
   woop_size.woopval = woop_digit;
   return woop_size;
+  #else
+  return size;
+#endif
 }

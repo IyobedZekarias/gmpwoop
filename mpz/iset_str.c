@@ -33,6 +33,26 @@ see https://www.gnu.org/licenses/.  */
 
 #include "gmp-impl.h"
 
+mp_limb_t
+mpz_initwb_set_str(mp_limb_t wbase, mpz_ptr x, const char *str, int base)
+{
+  #if WOOPING
+  static const mp_limb_t dummy_limb = 0xc1a0;
+  ALLOC(x) = 0;
+  PTR(x) = (mp_ptr)&dummy_limb;
+
+  /* if str has no digits mpz_set_str leaves x->_mp_size unset */
+  SIZ(x) = 0;
+  if(!wbase)
+    wbase = mpz_gen_woopbase(); 
+  WOOPB(x) = wbase; 
+  mpz_set_str(x, str, base); 
+  return wbase;
+  #else
+  return 0; 
+  #endif
+}
+
 int
 mpz_init_set_str (mpz_ptr x, const char *str, int base)
 {

@@ -31,6 +31,22 @@ see https://www.gnu.org/licenses/.  */
 
 #include "gmp-impl.h"
 
+mp_limb_t mpz_initwb(mp_limb_t base, mpz_ptr x) __GMP_NOTHROW
+{
+  #if WOOPING
+  mpz_init(x);
+  if (!base)
+  {
+    base = mpz_gen_woopbase();
+  }
+  WOOP(x) = 0;
+  WOOPB(x) = base;
+  return base;
+  #else
+  return 0;
+  #endif
+}
+
 void
 mpz_init (mpz_ptr x) __GMP_NOTHROW
 {

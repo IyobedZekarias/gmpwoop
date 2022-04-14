@@ -38,6 +38,10 @@ mpz_tdiv_r (mpz_ptr rem, mpz_srcptr num, mpz_srcptr den)
   mp_size_t ql;
   mp_size_t ns, nl, dl;
   mp_ptr np, dp, qp, rp;
+#if WOOPING
+  mp_limb_t denwoop = WOOP(den);
+  mp_limb_t numwoop = WOOP(num);
+#endif
   TMP_DECL;
 
   ns = SIZ (num);
@@ -92,6 +96,19 @@ mpz_tdiv_r (mpz_ptr rem, mpz_srcptr num, mpz_srcptr den)
 
   MPN_NORMALIZE (rp, dl);
 
-  SIZ (rem) = ns >= 0 ? dl : -dl;
+  SIZ(rem) = ns >= 0 ? dl : -dl;
+#if WOOPING
+  ASSERT(WOOPB(num) == WOOPB(den));
+  long long sizeq = (ns ^ SIZ(den)) >= 0 ? ql : -ql;
+  mp_limb_t q = mpz_get_woopval(qp, sizeq, WOOPB(num));
+  WOOPB(rem) = WOOPB(num);
+  WOOP(rem) = mpz_get_woopval(PTR(rem), SIZ(rem), WOOPB(rem));
+  // printf("test: %d\n", ((mp_limb_t)(((__uint128_t)q * (__uint128_t)denwoop + (__uint128_t)r) % WOOPB(num)) == numwoop % WOOPB(num)));
+#if GMP_NUMB_BITS == 64
+  ASSERT((mp_limb_t)(((__uint128_t)q * (__uint128_t)denwoop + (__uint128_t)WOOP(rem)) % WOOPB(num)) == numwoop % WOOPB(num));
+#else
+  ASSERT((mp_limb_t)(((uint64_t)q * (uint64_t)denwoop + (uint64_t)WOOP(rem)) % WOOPB(num)) == numwoop % WOOPB(num));
+#endif
+#endif
   TMP_FREE;
 }

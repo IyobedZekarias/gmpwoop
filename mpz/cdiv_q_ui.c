@@ -97,6 +97,18 @@ mpz_cdiv_q_ui (mpz_ptr quot, mpz_srcptr dividend, unsigned long int divisor)
       qn = nn - (qp[nn - 1] == 0);
     }
 
-  SIZ(quot) = ns >= 0 ? qn : -qn;
-  return rl;
+    SIZ(quot) = ns >= 0 ? qn : -qn;
+
+    
+#if WOOPING
+    WOOPB(quot) = WOOPB(dividend);
+    WOOP(quot) = mpz_get_wv(quot);
+    mp_limb_t remw = rl % WOOPB(dividend);
+#if GMP_NUMB_BITS == 64
+    ASSERT((mp_limb_t)(((__uint128_t)WOOP(quot) * (__uint128_t)(divisor % WOOPB(dividend)) + (__uint128_t)remw) % WOOPB(dividend)) == WOOP(dividend) % WOOPB(dividend));
+#else
+    ASSERT((mp_limb_t)(((uint64_t)WOOP(quot) * (uint64_t)(divisor % WOOPB(dividend)) + (uint64_t)remw) % WOOPB(dividned)) == WOOP(dividend) % WOOPB(dividend));
+#endif
+#endif
+    return rl;
 }

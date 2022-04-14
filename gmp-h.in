@@ -887,6 +887,25 @@ __GMP_DECLSPEC int mpz_init_set_str (mpz_ptr, const char *, int);
 #define mpz_init_set_ui __gmpz_init_set_ui
 __GMP_DECLSPEC void mpz_init_set_ui (mpz_ptr, unsigned long int);
 
+#if WOOPING
+#define mpz_initwb __gmpz_initwb
+__GMP_DECLSPEC mp_limb_t mpz_initwb(mp_limb_t, mpz_ptr) __GMP_NOTHROW;
+
+#define mpz_initswb __gmpz_initswb
+__GMP_DECLSPEC mp_limb_t mpz_initswb(mp_limb_t, mpz_ptr, ...) __GMP_NOTHROW;
+
+#define mpz_initwb_set_d __gmpz_initwb_set_d
+__GMP_DECLSPEC mp_limb_t mpz_initwb_set_d(mp_limb_t, mpz_ptr, double);
+
+#define mpz_initwb_set_si __gmpz_initwb_set_si
+__GMP_DECLSPEC mp_limb_t mpz_initwb_set_si(mp_limb_t, mpz_ptr, signed long int);
+
+#define mpz_initwb_set_str __gmpz_initwb_set_str
+__GMP_DECLSPEC mp_limb_t mpz_initwb_set_str(mp_limb_t, mpz_ptr, const char *, int);
+
+#define mpz_initwb_set_ui __gmpz_initwb_set_ui
+__GMP_DECLSPEC mp_limb_t mpz_initwb_set_ui(mp_limb_t, mpz_ptr, unsigned long int);
+
 #define mpz_gen_woopbase __gmpz_gen_woopbase
   __GMP_DECLSPEC mp_limb_t mpz_gen_woopbase();
 
@@ -904,6 +923,8 @@ __GMP_DECLSPEC void mpz_init_set_ui (mpz_ptr, unsigned long int);
 
 #define mpz_check_woop __gmpz_check_woop
   __GMP_DECLSPEC void mpz_check_woop(mpz_ptr); 
+
+#endif
 
 #define mpz_inp_raw __gmpz_inp_raw
 #ifdef _GMP_H_HAVE_FILE

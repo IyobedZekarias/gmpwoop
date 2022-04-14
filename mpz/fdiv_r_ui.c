@@ -103,5 +103,10 @@ mpz_fdiv_r_ui (mpz_ptr rem, mpz_srcptr dividend, unsigned long int divisor)
 	}
     }
 
+    #if WOOPING
+    WOOPB(rem) = WOOPB(dividend); 
+    WOOP(rem) = mpz_get_wv(rem); 
+    #endif
+
   return rl;
 }

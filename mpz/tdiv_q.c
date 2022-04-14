@@ -38,6 +38,10 @@ mpz_tdiv_q (mpz_ptr quot, mpz_srcptr num, mpz_srcptr den)
   mp_size_t ql;
   mp_size_t ns, ds, nl, dl;
   mp_ptr np, dp, qp, tp;
+#if WOOPING
+  mp_limb_t denwoop = WOOP(den);
+  mp_limb_t numwoop = WOOP(num);
+#endif
   TMP_DECL;
 
   ns = SIZ (num);
@@ -78,10 +82,36 @@ mpz_tdiv_q (mpz_ptr quot, mpz_srcptr num, mpz_srcptr den)
       /* Overlap dividend and scratch.  */
       np = tp;
     }
-  mpn_div_q (qp, np, nl, dp, dl, tp);
+#if WOOPING
+    static const mp_limb_t dummy_limb = 0xc1a0;
+    mp_ptr rp = (mp_ptr)&dummy_limb;
+    rp = TMP_ALLOC_LIMBS(dl);
 
-  ql -=  qp[ql - 1] == 0;
+    mpn_tdiv_qr(qp, rp, 0L, np, nl, dp, dl);
+    MPN_NORMALIZE(rp, dl);
+#else
+    mpn_div_q(qp, np, nl, dp, dl, tp);
+#endif
 
-  SIZ (quot) = (ns ^ ds) >= 0 ? ql : -ql;
-  TMP_FREE;
+    ql -= qp[ql - 1] == 0;
+
+    SIZ(quot) = (ns ^ ds) >= 0 ? ql : -ql;
+
+#if WOOPING
+    ASSERT(WOOPB(num) == WOOPB(den));
+    WOOP(quot) = mpz_get_woopval(PTR(quot), SIZ(quot), WOOPB(num));
+    WOOPB(quot) = WOOPB(num);
+    long long sizer = ns >= 0 ? dl : -dl;
+    mp_limb_t r = mpz_get_woopval(rp, sizer, WOOPB(num));
+    // printf("test: %d\n", ((mp_limb_t)(((__uint128_t)WOOP(quot) * (__uint128_t)denwoop + (__uint128_t)r) % WOOPB(num)) == numwoop % WOOPB(num)));
+#if GMP_LIMB_BITS == 64
+    // if (!((mp_limb_t)(((__uint128_t)WOOP(quot) * (__uint128_t)denwoop + (__uint128_t)r) % WOOPB(num)) == numwoop % WOOPB(num))){
+    //   printf("q: %lu\nr: %lu\nn: %lu\nd: %lu\nbase: %lu\n", WOOP(quot), r, numwoop, denwoop, WOOPB(num));
+    // }
+    ASSERT((mp_limb_t)(((__uint128_t)WOOP(quot) * (__uint128_t)denwoop + (__uint128_t)r) % WOOPB(num)) == numwoop % WOOPB(num));
+#else
+    ASSERT((mp_limb_t)(((uint64_t)WOOP(quot) * (uint64_t)denwoop + (uint64_t)r) % WOOPB(num)) == numwoop % WOOPB(num));
+#endif
+#endif
+    TMP_FREE;
 }

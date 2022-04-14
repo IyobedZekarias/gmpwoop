@@ -150,10 +150,18 @@ void
 mpz_cdiv_r_2exp (mpz_ptr w, mpz_srcptr u, mp_bitcnt_t cnt)
 {
   cfdiv_r_2exp (w, u, cnt, 1);
+#if WOOPING
+  WOOPB(w) = WOOPB(u);
+  WOOP(w) = mpz_get_wv(w);
+#endif
 }
 
 void
 mpz_fdiv_r_2exp (mpz_ptr w, mpz_srcptr u, mp_bitcnt_t cnt)
 {
   cfdiv_r_2exp (w, u, cnt, -1);
+#if WOOPING
+  WOOPB(w) = WOOPB(u);
+  WOOP(w) = mpz_get_wv(w);
+#endif
 }

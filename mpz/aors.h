@@ -49,6 +49,18 @@ Error, need OPERATION_add or OPERATION_sub
 void
 FUNCTION (mpz_ptr w, mpz_srcptr u, mpz_srcptr v)
 {
+#if WOOPING
+#ifdef OPERATION_add
+  WOOP(w) = ((WOOP(u) % WOOPB(u)) + (WOOP(v) % WOOPB(u))) % WOOPB(u);
+#endif
+#ifdef OPERATION_sub
+  signed long mod = ((signed long)WOOP(u) - (signed long)WOOP(v)) % (signed long)WOOPB(u);
+  if (mod < 0)
+    mod += WOOPB(u);
+
+  WOOP(w) = mod;
+#endif
+#endif
   mp_srcptr up, vp;
   mp_ptr wp;
   mp_size_t usize, vsize, wsize;

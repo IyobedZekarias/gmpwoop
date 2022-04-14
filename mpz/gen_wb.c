@@ -72,6 +72,7 @@ bool Miller(uint64_t p, int iteration)
 mp_limb_t
 mpz_gen_woopbase()
 {
+    #if WOOPING
     mp_limb_t r;
     FILE *fp;
     fp = fopen("/dev/urandom", "r");
@@ -90,4 +91,7 @@ mpz_gen_woopbase()
     }
 
     return r;
+    #else 
+    return 0; 
+    #endif
 }

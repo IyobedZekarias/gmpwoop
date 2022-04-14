@@ -36,6 +36,9 @@ see https://www.gnu.org/licenses/.  */
 void
 mpz_mul (mpz_ptr w, mpz_srcptr u, mpz_srcptr v)
 {
+#if WOOPING
+  WOOP(w) = ((WOOP(u) % WOOPB(u)) * (WOOP(v) % WOOPB(u))) % WOOPB(u);
+#endif
   mp_size_t usize;
   mp_size_t vsize;
   mp_size_t wsize;

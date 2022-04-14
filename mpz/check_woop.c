@@ -31,6 +31,7 @@ see https://www.gnu.org/licenses/.  */
 #include "longlong.h"
 
 void mpz_check_woop(mpz_ptr a){
+  #if WOOPING
   mp_limb_t checked_woop_val = WOOP(a); 
   mp_limb_t generated_woop_val = mpz_get_woopval(PTR(a), SIZ(a), WOOPB(a));
   if(checked_woop_val != generated_woop_val){
@@ -107,4 +108,5 @@ void mpz_check_woop(mpz_ptr a){
     printf("\n%lu\n%lu\n\n", WOOPB(a), WOOP(a));
   }
   ASSERT_ALWAYS(checked_woop_val == generated_woop_val);
+  #endif
 }

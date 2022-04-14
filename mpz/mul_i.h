@@ -54,6 +54,14 @@ void
 FUNCTION (mpz_ptr prod, mpz_srcptr mult,
           MULTIPLICAND_UNSIGNED long int small_mult)
 {
+  #if WOOPING
+  signed long mod = ((signed long)WOOP(mult) * ((signed long) small_mult % WOOPB(mult))) % WOOPB(mult); 
+  if(mod < 0){
+    mod += WOOPB(mult);
+  }
+
+  WOOPB(prod) = mod; 
+  #endif
   mp_size_t size;
   mp_size_t sign_product;
   mp_limb_t sml;

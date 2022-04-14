@@ -94,5 +94,6 @@ mpz_urandomm (mpz_ptr rop, gmp_randstate_t rstate, mpz_srcptr n)
 
   MPN_NORMALIZE (rp, size);
   SIZ (rop) = size;
+  WOOP(rop) = mpz_get_wv(rop);
   TMP_FREE;
 }
