@@ -1,0 +1,4 @@
+#! /bin/sh
+
+g++ -std=gnu++17 -O3 timer.cpp -o hello -lgmp
+./hello

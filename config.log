@@ -30,8 +30,8 @@ Kernel configured for up to 8 processors.
 Processor type: arm64e (ARM64E)
 Processors active: 0 1 2 3 4 5 6 7
 Primary memory available: 8.00 gigabytes
-Default processor set: 404 tasks, 3951 threads, 8 processors
-Load average: 1.29, Mach factor: 6.69
+Default processor set: 386 tasks, 3876 threads, 8 processors
+Load average: 2.15, Mach factor: 5.84
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -2816,7 +2816,7 @@ configure:24657: checking for attr_get
 configure:24657: gcc -o conftest -O2 -pedantic -march=armv8-a   conftest.c  >&5
 Undefined symbols for architecture arm64:
   "_attr_get", referenced from:
-      _main in conftest-813da6.o
+      _main in conftest-2faa78.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:24657: $? = 1
@@ -2930,7 +2930,7 @@ configure:24657: checking for cputime
 configure:24657: gcc -o conftest -O2 -pedantic -march=armv8-a   conftest.c  >&5
 Undefined symbols for architecture arm64:
   "_cputime", referenced from:
-      _main in conftest-108beb.o
+      _main in conftest-afbfab.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:24657: $? = 1
@@ -3053,7 +3053,7 @@ configure:24657: checking for getsysinfo
 configure:24657: gcc -o conftest -O2 -pedantic -march=armv8-a   conftest.c  >&5
 Undefined symbols for architecture arm64:
   "_getsysinfo", referenced from:
-      _main in conftest-b0c2a6.o
+      _main in conftest-b949fe.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:24657: $? = 1
@@ -3192,7 +3192,7 @@ configure:24657: checking for obstack_vprintf
 configure:24657: gcc -o conftest -O2 -pedantic -march=armv8-a   conftest.c  >&5
 Undefined symbols for architecture arm64:
   "_obstack_vprintf", referenced from:
-      _main in conftest-e69bc2.o
+      _main in conftest-ac8700.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:24657: $? = 1
@@ -3319,7 +3319,7 @@ configure:24657: checking for pstat_getprocessor
 configure:24657: gcc -o conftest -O2 -pedantic -march=armv8-a   conftest.c  >&5
 Undefined symbols for architecture arm64:
   "_pstat_getprocessor", referenced from:
-      _main in conftest-bb12f8.o
+      _main in conftest-eb94bc.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:24657: $? = 1
@@ -3444,7 +3444,7 @@ configure:24657: checking for read_real_time
 configure:24657: gcc -o conftest -O2 -pedantic -march=armv8-a   conftest.c  >&5
 Undefined symbols for architecture arm64:
   "_read_real_time", referenced from:
-      _main in conftest-32ad9c.o
+      _main in conftest-1edb10.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:24657: $? = 1
@@ -3574,7 +3574,7 @@ configure:24657: checking for sigstack
 configure:24657: gcc -o conftest -O2 -pedantic -march=armv8-a   conftest.c  >&5
 Undefined symbols for architecture arm64:
   "_sigstack", referenced from:
-      _main in conftest-350ff6.o
+      _main in conftest-7749d2.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:24657: $? = 1
@@ -3698,7 +3698,7 @@ configure:24657: checking for syssgi
 configure:24657: gcc -o conftest -O2 -pedantic -march=armv8-a   conftest.c  >&5
 Undefined symbols for architecture arm64:
   "_syssgi", referenced from:
-      _main in conftest-f02d99.o
+      _main in conftest-246fbf.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:24657: $? = 1
@@ -4555,8 +4555,8 @@ configure:27913: checking lex library
 configure:27927: gcc -o conftest -O2 -pedantic -march=armv8-a   conftest.c   >&5
 Undefined symbols for architecture arm64:
   "_yywrap", referenced from:
-      _yylex in conftest-167eed.o
-      _main in conftest-167eed.o
+      _yylex in conftest-c4df4e.o
+      _main in conftest-c4df4e.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:27927: $? = 1
@@ -8657,7 +8657,6 @@ config.status:1499: creating gmp.h
 config.status:1499: creating gmp.pc
 config.status:1499: creating gmpxx.pc
 config.status:1499: creating config.h
-config.status:1680: config.h is unchanged
 config.status:1740: linking mpn/generic/add.c to mpn/add.c
 config.status:1740: linking mpn/generic/add_1.c to mpn/add_1.c
 config.status:1740: linking mpn/arm64/aors_n.asm to mpn/add_n.asm
@@ -9522,20 +9521,3 @@ target_alias=''
 #define YYTEXT_POINTER 1
 
 configure: exit 0
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by GNU MP config.status 6.2.1, which was
-generated by GNU Autoconf 2.69.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status gmp.h
-
-on Iyobeds-Macbook.local
-
-config.status:1499: creating gmp.h

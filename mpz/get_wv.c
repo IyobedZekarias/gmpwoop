@@ -28,6 +28,24 @@ see https://www.gnu.org/licenses/.  */
 
 #include "gmp-impl.h"
 
+uint64_t prod_double(const uint64_t x, const uint64_t y, const uint64_t m)
+{
+  uint64_t c = (double)x * y / m;
+  int64_t ans = (int64_t)(x * y - c * m) % (int64_t)(m);
+  if (ans < 0)
+    ans += m;
+  return ans;
+}
+
+uint64_t prod_long_double(const uint64_t x, const uint64_t y, const uint64_t m)
+{
+  uint64_t c = (long double)x * y / m;
+  int64_t ans = (int64_t)(x * y - c * m) % (int64_t)(m);
+  if (ans < 0)
+    ans += m;
+  return ans;
+}
+
 mp_limb_t mpz_get_wv(mpz_srcptr a){
   #if WOOPING
   return mpz_get_woopval(PTR(a), SIZ(a), WOOPB(a));
@@ -44,12 +62,12 @@ mpz_get_woopval(mp_ptr a, long long size, mp_limb_t base)
     return 0; 
   }
 #if GMP_NUMB_BITS == 64
-  __uint128_t numbbase = (__uint128_t)(UINT64_MAX) + 1;
-  numbbase = numbbase % base; 
+  mp_limb_t numbbase = UINT64_MAX - base + 1;
+  // numbbase = numbbase % base; 
 #else
 #if GMP_NUMB_BITS == 32
-  uint64_t numbbase = (uint64_t)(UINT32_MAX) + 1;
-  numbbase = numbase % base; 
+  mp_Limb_t numbbase = UINT32_MAX - base + 1;
+  // numbbase = numbase % base; 
 #endif
 #endif
   long long sizeabs = size < 0 ? size * -1 : size;
@@ -58,7 +76,14 @@ mpz_get_woopval(mp_ptr a, long long size, mp_limb_t base)
 
   for (long long i = sizeabs - 2; i >= 0; i--)
   {
-    s1 = ((val % base) * (numbbase % base)) % base;
+    #if GMP_NUMB_BITS > 32
+      // s1 = prod_long_double(val, numbbase, base);
+      s1 = ((__uint128_t)(val % base) * (numbbase % base)) % base;
+    #else
+      // s1 = prod_double(val, numbbase, base);
+      s1 = ((uint64_t)(val % base) * (numbbase % base)) % base;
+    #endif
+    
     val = (s1 + a[i]) % base;
   }
 
