@@ -48,7 +48,9 @@ mpz_rrandomb (mpz_ptr x, gmp_randstate_t rstate, mp_bitcnt_t nbits)
     }
 
   SIZ(x) = nl;
+  #if WOOPING
   WOOP(x) = mpz_get_wv(x); 
+  #endif
 }
 
 /* Ask _gmp_rand for 32 bits per call unless that's more than a limb can hold.

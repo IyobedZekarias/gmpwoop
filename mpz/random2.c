@@ -48,5 +48,7 @@ mpz_random2 (mpz_ptr x, mp_size_t size)
     }
 
   SIZ (x) = size;
+  #if WOOPING
   WOOP(x) = mpz_get_wv(x);
+  #endif
 }

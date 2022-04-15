@@ -39,7 +39,7 @@ mp_limb_t mpz_set_woopbase(mp_limb_t a, mpz_ptr b) __GMP_NOTHROW
     a = mpz_gen_woopbase();
   WOOPB(b) = a;
   return a;
-  #else 
-  return 0
-  #endif
+  #else
+  return 0;
+#endif
 }
