@@ -54,4 +54,8 @@ mpz_init (mpz_ptr x) __GMP_NOTHROW
   ALLOC (x) = 0;
   PTR (x) = (mp_ptr) &dummy_limb;
   SIZ (x) = 0;
+  #if WOOPING
+  WOOP(x) = 0; 
+  WOOPB(x) = mpz_gen_woopbase(); 
+  #endif
 }

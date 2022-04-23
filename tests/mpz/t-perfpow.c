@@ -135,7 +135,7 @@ check_random (int reps)
 	  primebits = mpz_get_ui (np) % 100 + 3; /* 3-102 bit primes */
 	  mpz_urandomb (primes[j], rands, primebits);
 	  mpz_nextprime (primes[j], primes[j]);
-	  unique = 1;
+	//   unique = 1;
 	  for (k = 0; k < j; k++)
 	    {
 	      if (mpz_cmp (primes[j], primes[k]) == 0)
@@ -227,6 +227,10 @@ check_random (int reps)
     mpz_clear (primes[i]);
 }
 
+#if WOOPING
+int main(){return 0;}
+#else
+
 int
 main (int argc, char **argv)
 {
@@ -245,3 +249,4 @@ main (int argc, char **argv)
   tests_end ();
   exit (0);
 }
+#endif

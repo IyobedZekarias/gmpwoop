@@ -118,9 +118,16 @@ random_word (gmp_randstate_ptr rs)
   TMP_DECL;
   TMP_MARK;
 
+  #if WOOPING
+  mpz_initwb(0, x);
+  #else  
   MPZ_TMP_INIT (x, 2);
+  #endif
   mpz_urandomb (x, rs, 32);
   r = mpz_get_ui (x);
+  #if WOOPING
+  mpz_clear(x); 
+  #endif
   TMP_FREE;
   return r;
 }

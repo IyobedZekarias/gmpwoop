@@ -84,8 +84,12 @@ refmpz_gcd (mpz_ptr g, mpz_srcptr a_orig, mpz_srcptr b_orig)
   mp_bitcnt_t a_twos, b_twos, common_twos;
   mpz_t a;
   mpz_t b;
+  #if WOOPING
+  mpz_initswb(0, a, b, NULL); 
+  #else
   mpz_init (a);
   mpz_init (b);
+  #endif
   mpz_abs (a, a_orig);
   mpz_abs (b, b_orig);
 

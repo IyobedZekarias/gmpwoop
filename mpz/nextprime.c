@@ -56,6 +56,8 @@ mpz_nextprime (mpz_ptr p, mpz_srcptr n)
   mp_size_t pn;
   mp_bitcnt_t nbits;
   unsigned incr;
+  mp_limb_t base = WOOPB(p); 
+gmp_printf("%lu\n", base); 
   TMP_SDECL;
 
   /* First handle tiny numbers */
@@ -111,6 +113,7 @@ mpz_nextprime (mpz_ptr p, mpz_srcptr n)
 		goto next;
 	    }
 
+      WOOPB(p) = base; 
 	  mpz_add_ui (p, p, difference);
 	  difference = 0;
 

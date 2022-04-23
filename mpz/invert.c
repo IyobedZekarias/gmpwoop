@@ -43,7 +43,7 @@ mpz_invert (mpz_ptr inverse, mpz_srcptr x, mpz_srcptr n)
   nsize = ABSIZ (n);
 
   size = MAX (xsize, nsize) + 1;
-  TMP_MARK;
+  TMP_MARK;  
 
   MPZ_TMP_INIT (gcd, size);
   MPZ_TMP_INIT (tmp, size);

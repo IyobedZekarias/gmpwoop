@@ -5,6 +5,12 @@
 *.csv
 *.tmp
 Makefile
+gen-fib
+gen-fac
+gen-jacobitab
+gen-psqr
+gen-trialdivtab
+gen-bases
 
 # Object files
 *.o

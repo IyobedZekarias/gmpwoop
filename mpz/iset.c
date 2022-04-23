@@ -49,4 +49,8 @@ mpz_init_set (mpz_ptr w, mpz_srcptr u)
 
   MPN_COPY (wp, up, size);
   SIZ (w) = usize;
+  #if WOOPING
+  WOOP(w) = WOOP(u);
+  WOOPB(w) = WOOPB(u); 
+  #endif 
 }

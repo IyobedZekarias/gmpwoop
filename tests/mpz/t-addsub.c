@@ -42,15 +42,26 @@ main (int argc, char **argv)
   tests_start ();
   rands = RANDS;
 
+  #if WOOPING
+  mpz_initwb (0, bs);
+  #else
   mpz_init (bs);
+  #endif
 
   if (argc == 2)
      reps = atoi (argv[1]);
 
+  #if WOOPING
+  mpz_initwb (0, op1);
+  mpz_initwb (0, op2);
+  mpz_initwb (0, r1);
+  mpz_initwb (0, r2);
+  #else
   mpz_init (op1);
   mpz_init (op2);
   mpz_init (r1);
   mpz_init (r2);
+  #endif
 
   for (i = 0; i < reps; i++)
     {

@@ -98,7 +98,7 @@ mpz_gcdext (mpz_ptr g, mpz_ptr s, mpz_ptr t, mpz_srcptr a, mpz_srcptr b)
   if (t != NULL)
     {
       mpz_t x;
-      mpz_t gtmp, stmp;
+      mpz_t gtmp, stmp;      
 
       PTR (gtmp) = tmp_gp;
       SIZ (gtmp) = gsize;
@@ -109,6 +109,13 @@ mpz_gcdext (mpz_ptr g, mpz_ptr s, mpz_ptr t, mpz_srcptr a, mpz_srcptr b)
       ASSERT (ssize <= bsize); /* ssize*2 + asize + 1 <= asize + bsize*2 + 1 */
       PTR (x) = tmp_sp + ssize;
       ALLOC (x) = ssize + asize + 1;
+
+      #if WOOPING
+      mp_limb_t base = mpz_gen_woopbase(); 
+      WOOPB(x) = base; 
+      WOOPB(gtmp) = base; 
+      WOOPB(stmp) = base; 
+      #endif
 
       mpz_mul (x, stmp, a);
       mpz_sub (x, gtmp, x);

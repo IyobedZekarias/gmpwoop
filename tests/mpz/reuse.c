@@ -100,8 +100,8 @@ struct {
 } static dsi[] =
 {
   /* Don't change order here without changing the code in main(). */
-  { mpz_add_ui,         "mpz_add_ui",	     0 },
   { mpz_mul_ui,		"mpz_mul_ui",	     0 },
+  { mpz_add_ui,         "mpz_add_ui",	     0 },
   { mpz_sub_ui,		"mpz_sub_ui",	     0 },
   { mpz_fdiv_q_2exp,    "mpz_fdiv_q_2exp",   0x1000 },
   { mpz_fdiv_r_2exp,    "mpz_fdiv_r_2exp",   0x1000 },
@@ -222,8 +222,21 @@ main (int argc, char **argv)
 
   rands = RANDS;
 
+  #if WOOPING
+  mp_limb_t base = mpz_gen_woopbase(); 
+  mpz_initwb (base, bs);
+  mpz_initwb (base, in1);
+  mpz_initwb (base, in2);
+  mpz_initwb (base, in3);
+  mpz_initwb (base, ref1);
+  mpz_initwb (base, ref2);
+  mpz_initwb (base, ref3);
+  mpz_initwb (base, res1);
+  mpz_initwb (base, res2);
+  mpz_initwb (base, res3);
+  mpz_initwb (base, t);
+  #else
   mpz_init (bs);
-
   mpz_init (in1);
   mpz_init (in2);
   mpz_init (in3);
@@ -234,6 +247,7 @@ main (int argc, char **argv)
   mpz_init (res2);
   mpz_init (res3);
   mpz_init (t);
+  #endif
 
   mpz_set_ui (res1, 1);		/* force allocation */
   mpz_set_ui (res2, 1);		/* force allocation */
@@ -745,6 +759,19 @@ main (int argc, char **argv)
   if (isatty (STDOUT_FILENO))
     printf ("\r%20s", "");
 
+//   #if WOOPING
+//   mpz_check_woop (bs);
+//   mpz_check_woop (in1);
+//   mpz_check_woop (in2);
+//   mpz_check_woop (in3);
+//   mpz_check_woop (ref1);
+//   mpz_check_woop (ref2);
+//   mpz_check_woop (ref3);
+//   mpz_check_woop (res1);
+//   mpz_check_woop (res2);
+//   mpz_check_woop (res3);
+//   mpz_check_woop (t);
+//   #endif
   mpz_clear (bs);
   mpz_clear (in1);
   mpz_clear (in2);

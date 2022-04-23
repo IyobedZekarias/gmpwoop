@@ -55,12 +55,18 @@ FUNCTION (mpz_ptr prod, mpz_srcptr mult,
           MULTIPLICAND_UNSIGNED long int small_mult)
 {
   #if WOOPING
-  signed long mod = ((signed long)WOOP(mult) * ((signed long) small_mult % WOOPB(mult))) % WOOPB(mult); 
+//   signed long mod = ((signed long)WOOP(mult) * ((signed long) small_mult % WOOPB(mult))) % WOOPB(mult); 
+//   if(mod < 0){
+//     mod += WOOPB(mult);
+//   }
+  signed long mod = small_mult % WOOPB(mult); 
   if(mod < 0){
-    mod += WOOPB(mult);
+      mod += WOOPB(mult);
   }
+  WOOP(prod) = (mp_limb_t)(((__int128_t)WOOP(mult) * mod) % WOOPB(mult));
+  
 
-  WOOPB(prod) = mod; 
+//   WOOP(prod) = mod; 
   #endif
   mp_size_t size;
   mp_size_t sign_product;

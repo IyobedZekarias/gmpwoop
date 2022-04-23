@@ -1985,6 +1985,17 @@ __GMP_DECLSPEC void mpn_copyd (mp_ptr, mp_srcptr, mp_size_t);
    temporary variable; it will be automatically cleared out at function
    return.  We use __x here to make it possible to accept both mpz_ptr and
    mpz_t arguments.  */
+#if WOOPING
+#define MPZ_TMP_INIT(X, NLIMBS)						\
+  do {									\
+    mpz_ptr __x = (X);							\
+    ASSERT ((NLIMBS) >= 1);						\
+    __x->_mp_alloc = (NLIMBS);						\
+    __x->_mp_d = TMP_ALLOC_LIMBS (NLIMBS);				\
+    __x->woopval = 0; \
+    __x->woopbase = mpz_gen_woopbase(); \
+  } while (0)
+#else
 #define MPZ_TMP_INIT(X, NLIMBS)						\
   do {									\
     mpz_ptr __x = (X);							\
@@ -1992,6 +2003,7 @@ __GMP_DECLSPEC void mpn_copyd (mp_ptr, mp_srcptr, mp_size_t);
     __x->_mp_alloc = (NLIMBS);						\
     __x->_mp_d = TMP_ALLOC_LIMBS (NLIMBS);				\
   } while (0)
+#endif
 
 #if WANT_ASSERT
 static inline void *
