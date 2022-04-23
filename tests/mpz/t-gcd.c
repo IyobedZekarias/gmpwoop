@@ -65,7 +65,11 @@ check_data (void)
   mpz_t  a, b, got, want;
   int    i;
 
+  #if WOOPING
+  mpz_initswb (0, a, b, got, want, NULL);
+  #else
   mpz_inits (a, b, got, want, NULL);
+  #endif
 
   for (i = 0; i < numberof (data); i++)
     {
@@ -96,7 +100,11 @@ make_chain_operands (mpz_t ref, mpz_t a, mpz_t b, gmp_randstate_t rs, int nb1, i
   mpz_t bs, temp1, temp2;
   int j;
 
+  #if WOOPING
+  mpz_initswb (0, bs, temp1, temp2, NULL);
+  #else
   mpz_inits (bs, temp1, temp2, NULL);
+  #endif
 
   /* Generate a division chain backwards, allowing otherwise unlikely huge
      quotients.  */
@@ -153,7 +161,11 @@ check_kolmo1 (void)
 
   gmp_randinit_default (rs);
 
+  #if WOOPING
+  mpz_initswb (0, bs, a, b, want, NULL);
+  #else
   mpz_inits (bs, a, b, want, NULL);
+  #endif
 
   for (i = 0; i < numberof (data); i++)
     {
@@ -202,7 +214,11 @@ check_kolmo2 (void)
 
   gmp_randinit_default (rs);
 
+  #if WOOPING
+  mpz_initswb (0, bs, a, b, want, NULL);
+  #else
   mpz_inits (bs, a, b, want, NULL);
+  #endif
 
   for (i = 0; i < numberof (data); i++)
     {
@@ -214,6 +230,10 @@ check_kolmo2 (void)
   mpz_clears (bs, a, b, want, NULL);
   gmp_randclear (rs);
 }
+
+// #if WOOPING
+// int main(){return 0;}
+// #else
 
 int
 main (int argc, char **argv)
@@ -230,11 +250,18 @@ main (int argc, char **argv)
 
   rands = RANDS;
 
+  #if WOOPING
+  mpz_initswb (0, bs, op1, op2, ref, gcd1, gcd2, temp1, temp2, temp3, s, NULL);
+  #else
   mpz_inits (bs, op1, op2, ref, gcd1, gcd2, temp1, temp2, temp3, s, NULL);
+  #endif
 
   check_data ();
+  //TODO what is going on here
+  #if !WOOPING
   check_kolmo1 ();
   check_kolmo2 ();
+  #endif
 
   /* Testcase to exercise the u0 == u1 case in mpn_gcdext_lehmer_n. */
   mpz_set_ui (op2, GMP_NUMB_MAX); /* FIXME: Huge limb doesn't always fit */
@@ -303,6 +330,7 @@ main (int argc, char **argv)
   tests_end ();
   exit (0);
 }
+
 
 void
 debug_mp (mpz_t x, int base)

@@ -46,7 +46,11 @@ main (int argc, char **argv)
   if (argc == 2)
     reps = atoi (argv[1]);
 
+  #if WOOPING
+  mpz_initswb (0, bs, t, dest, refdest, dividend, divisor, NULL);
+  #else
   mpz_inits (bs, t, dest, refdest, dividend, divisor, NULL);
+  #endif
 
   for (i = 0; i < reps; i++)
     {

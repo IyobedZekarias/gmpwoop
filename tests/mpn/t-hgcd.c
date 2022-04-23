@@ -66,11 +66,15 @@ main (int argc, char **argv)
   tests_start ();
   rands = RANDS;
 
+#if WOOPING
+mpz_initswb(0, bs, op1, op2, temp1, temp2, NULL);
+#else
   mpz_init (bs);
   mpz_init (op1);
   mpz_init (op2);
   mpz_init (temp1);
   mpz_init (temp2);
+  #endif
 
   for (i = 0; hgcd_values[i].res >= 0; i++)
     {
@@ -283,7 +287,11 @@ hgcd_ref_init (struct hgcd_ref *hgcd)
     {
       unsigned j;
       for (j = 0; j<2; j++)
+      #if WOOPING
+      mpz_initwb (0, hgcd->m[i][j]);
+      #else
 	mpz_init (hgcd->m[i][j]);
+    #endif
     }
 }
 
@@ -348,7 +356,11 @@ hgcd_ref (struct hgcd_ref *hgcd, mpz_t a, mpz_t b)
   else
     return 0;
 
+#if WOOPING
+mpz_initwb (0, q);
+#else
   mpz_init (q);
+  #endif
 
   for (;;)
     {

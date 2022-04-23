@@ -67,7 +67,11 @@ main (int argc, char **argv)
   tests_start ();
   TESTS_REPS (reps, argv, argc);
 
-  mpz_inits (a, b, NULL);
+#if WOOPING
+  mpz_initswb (0, a, b, NULL);
+#else
+  mpz_inits(a, b, NULL); 
+#endif
 
   rands = RANDS;		/* FIXME: not used */
 

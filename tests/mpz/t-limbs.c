@@ -53,7 +53,11 @@ check_funcs (const char *name,
 	     mpz_srcptr a, mpz_srcptr b)
 {
   mpz_t r, ref;
+  #if WOOPING
+  mpz_initswb(0, r, ref, NULL); 
+  #else
   mpz_inits (r, ref, NULL);
+  #endif
 
   ref_f (ref, a, b);
   MPZ_CHECK_FORMAT (ref);
@@ -72,6 +76,11 @@ check_funcs (const char *name,
       gmp_printf ("ref = %Zx\n", ref);
       abort ();
     }
+    #if WOOPING 
+    mpz_clear(r); 
+    mpz_clear(ref);    
+    return;
+    #endif
   mpz_clears (r, ref, NULL);
 }
 
@@ -81,7 +90,11 @@ check_add (void)
   gmp_randstate_ptr rands = RANDS;
   mpz_t bs, a, b;
   unsigned i;
+  #if WOOPING
+  mpz_initswb(0, bs, a, b, NULL); 
+  #else
   mpz_inits (bs, a, b, NULL);
+  #endif
   for (i = 0; i < COUNT; i++)
     {
       mpz_urandomb (bs, rands, 32);
@@ -144,7 +157,11 @@ check_mul (void)
   gmp_randstate_ptr rands = RANDS;
   mpz_t bs, a, b;
   unsigned i;
+  #if WOOPING
+  mpz_initswb(0, bs, a, b, NULL);
+  #else
   mpz_inits (bs, a, b, NULL);
+  #endif
   for (i = 0; i < COUNT; i++)
     {
       mpz_urandomb (bs, rands, 32);
@@ -166,7 +183,11 @@ check_roinit (void)
   mpz_t bs, a, b, r, ref;
   unsigned i;
 
+  #if WOOPING
+  mpz_initswb (0, bs, a, b, r, ref, NULL);
+  #else
   mpz_inits (bs, a, b, r, ref, NULL);
+  #endif
 
   for (i = 0; i < COUNT; i++)
     {

@@ -147,12 +147,18 @@ main (int argc, char **argv)
   tests_start ();
   rands = RANDS;
 
+#if WOOPING
+    mpz_initswb(0, n, d, q, r, tz, junk, NULL); 
+#else
+
   mpz_init (n);
   mpz_init (d);
   mpz_init (q);
   mpz_init (r);
   mpz_init (tz);
   mpz_init (junk);
+
+#endif
 
   maxnn = maxnbits / GMP_NUMB_BITS + 1;
   maxdn = maxdbits / GMP_NUMB_BITS + 1;

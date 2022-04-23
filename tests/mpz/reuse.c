@@ -183,8 +183,6 @@ realloc_if_reducing (mpz_ptr r)
 
 #define INVOKE_RRS(desc,r1,r2,i1)					\
   do {									\
-    if (pass & 1) realloc_if_reducing (r1);				\
-    if (pass & 2) realloc_if_reducing (r2);				\
     (desc).fptr (r1, r2, i1);						\
   } while (0)
 #define INVOKE_RS(desc,r1,i1)						\
@@ -375,6 +373,7 @@ main (int argc, char **argv)
 	  MPZ_CHECK_FORMAT (ref1);
 
 	  mpz_set (res1, in1);
+    //   printf("%d\n", i);
 	  INVOKE_RRS (dsi[i], res1, res1, in2i);
 	  MPZ_CHECK_FORMAT (res1);
 	  if (mpz_cmp (ref1, res1) != 0)

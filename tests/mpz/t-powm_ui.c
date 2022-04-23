@@ -41,8 +41,12 @@ main (int argc, char **argv)
   rands = RANDS;
 
   TESTS_REPS (reps, argv, argc);
-
+  
+  #if WOOPING
+  mpz_initswb (0, bs, base, exp, mod, r1, r2, base2, NULL);
+  #else
   mpz_inits (bs, base, exp, mod, r1, r2, base2, NULL);
+  #endif
 
   for (i = 0; i < reps; i++)
     {

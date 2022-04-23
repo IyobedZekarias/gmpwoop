@@ -98,8 +98,13 @@ main (int argc, char **argv)
 
   tests_start ();
   rands = RANDS;
-  mpz_init (a);
-  mpz_init (b);
+  #if WOOPING
+  mpz_initwb (0, a);
+  mpz_initwb (0, b);
+  #else
+  mpz_init(a); 
+  mpz_init(b);
+  #endif
 
   for (i = 0; i < 300; i++)
     {

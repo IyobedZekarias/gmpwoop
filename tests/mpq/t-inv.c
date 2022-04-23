@@ -29,8 +29,13 @@ main (int argc, char **argv)
 
   tests_start ();
 
-  mpq_inits (a, b, (mpq_ptr)0);
+  #if WOOPING
+  mpz_initswb(0, m, n, (mpz_ptr)0); 
+  #else
   mpz_inits (m, n, (mpz_ptr)0);
+  #endif
+  mpq_inits (a, b, (mpq_ptr)0);
+  
 
   mpz_set_ui (m, 13);
   mpq_set_den (a, m);

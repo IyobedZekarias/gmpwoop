@@ -72,10 +72,14 @@ main (int argc, char **argv)
 
 
   TMP_MARK;
+  #if WOOPING
+  mpz_initswb(0, m, a, r, g, NULL); 
+  #else
   mpz_init (m);
   mpz_init (a);
   mpz_init (r);
   mpz_init (g);
+  #endif
 
   TESTS_REPS (count, argv, argc);
 

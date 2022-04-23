@@ -46,6 +46,9 @@ main (int argc, char **argv)
 {
   mpz_t a, b, ref;
   int count = COUNT;
+  #if WOOPING
+  count = 20000; 
+  #endif
   int test;
   gmp_randstate_ptr rands;
 
@@ -54,9 +57,13 @@ main (int argc, char **argv)
   tests_start ();
   rands = RANDS;
 
+#if WOOPING
+  mpz_initswb(0, a, b, ref, NULL);
+#else
   mpz_init (a);
   mpz_init (b);
   mpz_init (ref);
+  #endif
   for (test = 0; test < count; test++)
     {
       mp_bitcnt_t asize = 1 + gmp_urandomm_ui(rands, 2*GMP_NUMB_BITS);

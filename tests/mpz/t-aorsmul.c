@@ -377,6 +377,9 @@ check_random (int argc, char *argv[])
   gmp_randstate_ptr rands = RANDS;
   mpz_t  w, x, y;
   int    i, reps = 2000;
+  #if WOOPING
+  reps = 500; 
+  #endif
 
   mpz_init (w);
   mpz_init (x);

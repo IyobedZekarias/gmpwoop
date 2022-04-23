@@ -53,8 +53,12 @@ main (int argc, char **argv)
   tests_start ();
   rands = RANDS;
 
+#if WOOPING
+  mpz_initswb(0, a, b, NULL);
+#else
   mpz_init (a);
   mpz_init (b);
+  #endif
   for (test = 0; test < count; test++)
     {
       mp_limb_t al, bl;
