@@ -32,6 +32,22 @@ see https://www.gnu.org/licenses/.  */
 #include <stdio.h>
 #include "gmp-impl.h"
 
+mp_limb_t 
+mpz_init2wb(mp_limb_t base, mpz_ptr x, mp_bitcnt_t bits) __GMP_NOTHROW
+{
+  #if WOOPING
+  mpz_init2(x, bits); 
+  if(!base)
+    base = mpz_gen_woopbase(); 
+
+  WOOP(x) = 0; 
+  WOOPB(x) = base; 
+  return base; 
+  #else
+  return 0; 
+  #endif
+}
+
 void
 mpz_init2 (mpz_ptr x, mp_bitcnt_t bits)
 {
@@ -52,4 +68,8 @@ mpz_init2 (mpz_ptr x, mp_bitcnt_t bits)
   PTR(x) = __GMP_ALLOCATE_FUNC_LIMBS (new_alloc);
   ALLOC(x) = new_alloc;
   SIZ(x) = 0;
+  #if WOOPING
+  WOOP(x) = 0; 
+  WOOPB(x) = mpz_gen_woopbase(); 
+  #endif
 }

@@ -70,4 +70,8 @@ mpz_init_set_ui (mpz_ptr dest, unsigned long int val)
   PTR (dest)[0] = val & GMP_NUMB_MASK;
 
   SIZ (dest) = size;
+#if WOOPING
+  WOOPB(dest) = mpz_gen_woopbase();
+  WOOP(dest) = mpz_get_wv(dest);
+#endif
 }

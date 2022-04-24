@@ -56,4 +56,8 @@ mpz_init_set_d (mpz_ptr dest, double val)
   SIZ (dest) = 0;
   PTR (dest) = (mp_ptr) &dummy_limb;
   mpz_set_d (dest, val);
+  #if WOOPING
+  WOOPB(dest) = mpz_gen_woopbase(); 
+  WOOP(dest) = mpz_get_wv(dest); 
+  #endif
 }

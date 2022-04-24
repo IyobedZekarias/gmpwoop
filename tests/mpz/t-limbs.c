@@ -158,7 +158,8 @@ check_mul (void)
   mpz_t bs, a, b;
   unsigned i;
   #if WOOPING
-  mpz_initswb(0, bs, a, b, NULL);
+  mp_limb_t base = mpz_gen_woopbase(); 
+  mpz_initswb(base, bs, a, b, NULL);
   #else
   mpz_inits (bs, a, b, NULL);
   #endif
@@ -184,7 +185,8 @@ check_roinit (void)
   unsigned i;
 
   #if WOOPING
-  mpz_initswb (0, bs, a, b, r, ref, NULL);
+  mp_limb_t base = mpz_gen_woopbase();
+  mpz_initswb(base, bs, a, b, r, ref, NULL);
   #else
   mpz_inits (bs, a, b, r, ref, NULL);
   #endif
@@ -207,8 +209,13 @@ check_roinit (void)
       {
 	mpz_t a1, b1;
 #if __STDC_VERSION__ >= 199901
+  #if WOOPING
+  const mpz_t a2 = MPZ_ROINIT_N ( (mp_ptr) ap, an, base);
+	const mpz_t b2 = MPZ_ROINIT_N ( (mp_ptr) bp, bn, base);
+  #else
 	const mpz_t a2 = MPZ_ROINIT_N ( (mp_ptr) ap, an);
 	const mpz_t b2 = MPZ_ROINIT_N ( (mp_ptr) bp, bn);
+  #endif
 
 	mpz_set_ui (r, 0);
 	mpz_add (r, a2, b2);
@@ -223,7 +230,11 @@ check_roinit (void)
 	  }
 #endif
 	mpz_set_ui (r, 0);
-	mpz_add (r, mpz_roinit_n (a1, ap, an), mpz_roinit_n (b1, bp, bn));
+  #if WOOPING
+	mpz_add (r, mpz_roinit_n (a1, ap, an, base), mpz_roinit_n (b1, bp, bn, base));
+  #else
+  mpz_add(r, mpz_roinit_n(a1, ap, an), mpz_roinit_n(b1, bp, bn));
+  #endif
 	if (mpz_cmp (r, ref) != 0)
 	  {
 	    printf ("mpz_roinit_n failed\n");

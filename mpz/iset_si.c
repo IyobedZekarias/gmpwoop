@@ -70,4 +70,8 @@ mpz_init_set_si (mpz_ptr dest, signed long int val)
 #endif
 
   SIZ (dest) = val >= 0 ? size : -size;
+#if WOOPING
+  WOOPB(dest) = mpz_gen_woopbase();
+  WOOP(dest) = mpz_get_wv(dest);
+#endif
 }

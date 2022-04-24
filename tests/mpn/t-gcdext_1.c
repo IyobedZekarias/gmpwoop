@@ -32,7 +32,11 @@ set_signed_limb (mpz_t r, mp_limb_signed_t x)
 {
   mpz_t t;
   mp_limb_t abs_x = ABS_CAST(mp_limb_t, x);
+  #if WOOPING
+  mpz_set(r, mpz_roinit_n(t, &abs_x, 1, mpz_gen_woopbase()));
+  #else
   mpz_set (r, mpz_roinit_n (t, &abs_x, 1));
+  #endif
   if (x < 0)
     mpz_neg (r, r);
 }
@@ -59,12 +63,20 @@ one_test (mp_limb_t a, mp_limb_t b)
 
       set_signed_limb (sz, s);
       set_signed_limb (tz, t);
+      
+#if WOOPING
+      mp_limb_t base = mpz_gen_woopbase();
+      mpz_mul (d, mpz_roinit_n (tmp, &a, 1, base), sz);
+      mpz_addmul (d, mpz_roinit_n (tmp, &b, 1, base), tz);
+      if (mpz_cmp(d, mpz_roinit_n(tmp, &g, 1, base)) == 0 && a % g == 0 && b % g == 0)
 
-      mpz_mul (d, mpz_roinit_n (tmp, &a, 1), sz);
-      mpz_addmul (d, mpz_roinit_n (tmp, &b, 1), tz);
+#else
 
-      if (mpz_cmp (d, mpz_roinit_n (tmp, &g, 1)) == 0
-	  && a % g == 0 && b % g == 0)
+      mpz_mul(d, mpz_roinit_n(tmp, &a, 1), sz);
+      mpz_addmul(d, mpz_roinit_n(tmp, &b, 1), tz);
+      if (mpz_cmp(d, mpz_roinit_n(tmp, &g, 1)) == 0  && a % g == 0 && b % g == 0)
+
+#endif     
 	{
 	  mp_limb_t a_div_g = a / g;
 	  mp_limb_t b_div_g = b / g;
@@ -72,8 +84,13 @@ one_test (mp_limb_t a, mp_limb_t b)
 	  mp_limb_t abs_t = ABS_CAST(mp_limb_t, t);
 	  mpz_mul_ui (sz, sz, 2);
 	  mpz_mul_ui (tz, tz, 2);
+    #if WOOPING
+    if ((abs_s == 1 || mpz_cmpabs(sz, mpz_roinit_n(tmp, &b_div_g, 1, base)) < 0) 
+      && (abs_t == 1 || mpz_cmpabs(tz, mpz_roinit_n(tmp, &a_div_g, 1, base)) < 0))
+#else
 	  if ((abs_s == 1 || mpz_cmpabs (sz, mpz_roinit_n (tmp, &b_div_g, 1)) < 0)
 	       && (abs_t == 1 || mpz_cmpabs (tz, mpz_roinit_n (tmp, &a_div_g, 1)) < 0))
+    #endif
 	    {
 	      mpz_clear (d);
 	      mpz_clear (sz);

@@ -163,7 +163,12 @@ int
 mpq_cmp_z (mpq_srcptr op1, mpz_srcptr op2)
 {
   const static mp_limb_t one = 1;
+  #if WOOPING
+  mp_limb_t base = mpz_gen_woopbase();
+  mpz_t den = MPZ_ROINIT_N((mp_limb_t *)&one, 1, base);
+#else
   const static mpz_t den = MPZ_ROINIT_N ((mp_limb_t *) &one, 1);
+  #endif
 
   return mpq_cmp_numden (op1, op2, den);
 }

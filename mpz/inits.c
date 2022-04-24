@@ -67,12 +67,19 @@ mpz_inits (mpz_ptr x, ...) __GMP_NOTHROW
   va_list  ap;
 
   va_start (ap, x);
+  #if WOOPING
+  mp_limb_t base = mpz_gen_woopbase(); 
+  #endif
 
   do
     {
       ALLOC (x) = 0;
       PTR (x) = (mp_ptr) &dummy_limb;
       SIZ (x) = 0;
+      #if WOOPING
+      WOOP(x) = 0; 
+      WOOPB(x) = base; 
+      #endif
 
       x = va_arg (ap, mpz_ptr);
     }

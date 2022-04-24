@@ -30,8 +30,13 @@ see https://www.gnu.org/licenses/.  */
 
 #include "gmp-impl.h"
 
+#if WOOPING
+mpz_srcptr
+mpz_roinit_n (mpz_ptr x, mp_srcptr xp, mp_size_t xs, mp_limb_t woopbase)
+#else
 mpz_srcptr
 mpz_roinit_n (mpz_ptr x, mp_srcptr xp, mp_size_t xs)
+#endif
 {
   mp_size_t xn = ABS(xs);
   MPN_NORMALIZE (xp, xn);
@@ -39,5 +44,9 @@ mpz_roinit_n (mpz_ptr x, mp_srcptr xp, mp_size_t xs)
   ALLOC (x) = 0;
   SIZ (x) = xs < 0 ? -xn : xn;
   PTR (x) = (mp_ptr) xp;
+  #if WOOPING
+  WOOPB(x) = woopbase; 
+  WOOP(x) = mpz_get_wv(x); 
+  #endif
   return x;
 }

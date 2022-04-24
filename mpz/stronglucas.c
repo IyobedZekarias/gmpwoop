@@ -68,7 +68,11 @@ mpz_stronglucas (mpz_srcptr x, mpz_ptr V, mpz_ptr Qk)
   mpz_t T1, T2;
 
   /* Test on the absolute value. */
+  #if WOOPING
+  mpz_roinit_n (n, PTR (x), ABSIZ (x), mpz_gen_woopbase());
+  #else
   mpz_roinit_n (n, PTR (x), ABSIZ (x));
+  #endif
 
   ASSERT (mpz_odd_p (n));
   /* ASSERT (mpz_gcd_ui (NULL, n, 6) == 1);	*/

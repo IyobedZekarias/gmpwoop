@@ -891,6 +891,9 @@ __GMP_DECLSPEC void mpz_init_set_ui (mpz_ptr, unsigned long int);
 #define mpz_initwb __gmpz_initwb
 __GMP_DECLSPEC mp_limb_t mpz_initwb(mp_limb_t, mpz_ptr) __GMP_NOTHROW;
 
+#define mpz_init2wb __gmpz_init2wb
+__GMP_DECLSPEC mp_limb_t mpz_init2wb(mp_limb_t, mpz_ptr, mp_bitcnt_t) __GMP_NOTHROW;
+
 #define mpz_initswb __gmpz_initswb
 __GMP_DECLSPEC mp_limb_t mpz_initswb(mp_limb_t, mpz_ptr, ...) __GMP_NOTHROW;
 
@@ -1179,10 +1182,22 @@ __GMP_DECLSPEC mp_ptr mpz_limbs_modify (mpz_ptr, mp_size_t);
 #define mpz_limbs_finish __gmpz_limbs_finish
 __GMP_DECLSPEC void mpz_limbs_finish (mpz_ptr, mp_size_t);
 
-#define mpz_roinit_n __gmpz_roinit_n
-__GMP_DECLSPEC mpz_srcptr mpz_roinit_n (mpz_ptr, mp_srcptr, mp_size_t);
+#if WOOPING
+#define MPZ_ROINIT_N(xp, xs, woopbase) \
+  {                                                                       \
+    {                                                                     \
+      0, (xs), (xp), mpz_get_woopval(xp, xs, woopbase), woopbase          \
+    }                                                                     \
+  }
 
+#define mpz_roinit_n __gmpz_roinit_n
+__GMP_DECLSPEC mpz_srcptr mpz_roinit_n(mpz_ptr, mp_srcptr, mp_size_t, mp_limb_t);
+#else
 #define MPZ_ROINIT_N(xp, xs) {{0, (xs),(xp) }}
+
+#define mpz_roinit_n __gmpz_roinit_n
+__GMP_DECLSPEC mpz_srcptr mpz_roinit_n(mpz_ptr, mp_srcptr, mp_size_t);
+#endif
 
 /**************** Rational (i.e. Q) routines.  ****************/
 

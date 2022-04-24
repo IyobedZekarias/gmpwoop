@@ -1,16 +1,11 @@
 .libs/
+*
 # Prerequisites
 *.d
 *.h
 *.csv
 *.tmp
 Makefile
-gen-fib
-gen-fac
-gen-jacobitab
-gen-psqr
-gen-trialdivtab
-gen-bases
 
 # Object files
 *.o
@@ -2155,3 +2150,9 @@ gen-bases
 !bootstrap.c
 !mp_get_fns.c
 !COPYINGv3
+gen-fib
+gen-fac
+gen-jacobitab
+gen-psqr
+gen-trialdivtab
+gen-bases

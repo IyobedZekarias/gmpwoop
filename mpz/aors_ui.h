@@ -58,7 +58,7 @@ FUNCTION (mpz_ptr w, mpz_srcptr u, unsigned long int vval)
 {
 #if WOOPING
 #ifdef OPERATION_add_ui
-  gmp_printf("%lu, %lu, %lu\n", WOOP(w), vval, WOOPB(u)); 
+  // gmp_printf("%lu, %lu, %lu\n", WOOP(w), vval, WOOPB(u)); 
   WOOP(w) = (mp_limb_t)((__uint128_t)WOOP(u) + WOOPB(u)) % WOOPB(u);
 #endif
 #ifdef OPERATION_sub_ui
