@@ -443,7 +443,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/nbstrong161/gmpwoop0.1'
+ac_pwd='/home/iyobedzekarias/gmpwoop0.1'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/usr/bin/mkdir -p'
@@ -913,7 +913,7 @@ S["LIBOBJS"]=""
 S["LEXLIB"]=""
 S["WOOPING"]="#define WOOPING 1"
 S["LEX_OUTPUT_ROOT"]=""
-S["LEX"]="${SHELL} /home/nbstrong161/gmpwoop0.1/missing flex"
+S["LEX"]="${SHELL} /home/iyobedzekarias/gmpwoop0.1/missing flex"
 S["YFLAGS"]=""
 S["YACC"]="bison -y"
 S["LIBREADLINE"]="-lreadline"
@@ -1080,12 +1080,12 @@ S["mkdir_p"]="$(MKDIR_P)"
 S["MKDIR_P"]="/usr/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]="strip"
-S["install_sh"]="${SHELL} /home/nbstrong161/gmpwoop0.1/install-sh"
-S["MAKEINFO"]="${SHELL} /home/nbstrong161/gmpwoop0.1/missing makeinfo"
-S["AUTOHEADER"]="${SHELL} /home/nbstrong161/gmpwoop0.1/missing autoheader"
-S["AUTOMAKE"]="${SHELL} /home/nbstrong161/gmpwoop0.1/missing automake-1.15"
-S["AUTOCONF"]="${SHELL} /home/nbstrong161/gmpwoop0.1/missing autoconf"
-S["ACLOCAL"]="${SHELL} /home/nbstrong161/gmpwoop0.1/missing aclocal-1.15"
+S["install_sh"]="${SHELL} /home/iyobedzekarias/gmpwoop0.1/install-sh"
+S["MAKEINFO"]="${SHELL} /home/iyobedzekarias/gmpwoop0.1/missing makeinfo"
+S["AUTOHEADER"]="${SHELL} /home/iyobedzekarias/gmpwoop0.1/missing autoheader"
+S["AUTOMAKE"]="${SHELL} /home/iyobedzekarias/gmpwoop0.1/missing automake-1.15"
+S["AUTOCONF"]="${SHELL} /home/iyobedzekarias/gmpwoop0.1/missing autoconf"
+S["ACLOCAL"]="${SHELL} /home/iyobedzekarias/gmpwoop0.1/missing aclocal-1.15"
 S["VERSION"]="6.2.1"
 S["PACKAGE"]="gmp"
 S["CYGPATH_W"]="echo"
