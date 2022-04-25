@@ -73,7 +73,7 @@ mp_limb_t
 mpz_gen_woopbase()
 {
     #if WOOPING
-    mp_limb_t r;
+    mp_limb_t r = 0;
     FILE *fp;
     fp = fopen("/dev/urandom", "r");
     size_t ret = fread(&r, 4, 1, fp);

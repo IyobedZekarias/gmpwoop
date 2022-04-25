@@ -71,7 +71,7 @@ mpz_get_woopval(mp_ptr a, long long size, mp_limb_t base)
 #endif
 #endif
   long long sizeabs = size < 0 ? size * -1 : size;
-  mp_limb_t s1;
+  mp_limb_t s1 = 0;
   mp_limb_t val = a[sizeabs - 1] % base;
 
   for (long long i = sizeabs - 2; i >= 0; i--)

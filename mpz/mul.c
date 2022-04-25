@@ -38,9 +38,9 @@ mpz_mul (mpz_ptr w, mpz_srcptr u, mpz_srcptr v)
 {
 #if WOOPING
 #if GMP_NUMB_BITS > 32
-  WOOP(w) = ((__uint128_t)(WOOP(u) % WOOPB(u)) * (WOOP(v) % WOOPB(u))) % WOOPB(u);
+  WOOP(w) = ((__uint128_t)(WOOP(u)) * (WOOP(v))) % WOOPB(u);
 #else
-  WOOP(w) = ((uint64_t)(WOOP(u) % WOOPB(u)) * (WOOP(v) % WOOPB(u))) % WOOPB(u);
+  WOOP(w) = ((uint64_t)(WOOP(u)) * (WOOP(v))) % WOOPB(u);
 #endif 
   
 #endif

@@ -42,4 +42,10 @@ mpq_init (mpq_t x)
   PTR(DEN(x)) = __GMP_ALLOCATE_FUNC_LIMBS (1);
   PTR(DEN(x))[0] = 1;
   SIZ(DEN(x)) = 1;
+  #if WOOPING
+  WOOPB(NUM(x)) = mpz_gen_woopbase(); 
+  WOOP(NUM(x)) = 0; 
+  WOOPB(DEN(x)) = mpz_gen_woopbase(); 
+  WOOP(DEN(x)) = 1; 
+  #endif
 }
