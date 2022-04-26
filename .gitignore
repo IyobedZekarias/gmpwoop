@@ -6,6 +6,9 @@
 *.csv
 *.tmp
 Makefile
+config.log
+config.m4
+config.status
 
 # Object files
 *.o
