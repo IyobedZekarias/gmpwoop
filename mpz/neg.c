@@ -53,4 +53,7 @@ mpz_neg (mpz_ptr w, mpz_srcptr u)
     }
 
   SIZ (w) = -usize;
+  #if WOOPING
+  WOOP(w) = WOOPB(u) - WOOP(u); 
+  #endif
 }
