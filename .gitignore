@@ -9,6 +9,8 @@ Makefile
 config.log
 config.m4
 config.status
+tune/sqr_basecase.c
+libtool
 
 # Object files
 *.o
