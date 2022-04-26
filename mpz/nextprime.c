@@ -59,7 +59,7 @@ mpz_nextprime (mpz_ptr p, mpz_srcptr n)
   #if WOOPING
   mp_limb_t base = WOOPB(p); 
   #endif
-gmp_printf("%lu\n", base); 
+// gmp_printf("%lu\n", base); 
   TMP_SDECL;
 
   /* First handle tiny numbers */
