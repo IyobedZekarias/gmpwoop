@@ -154,10 +154,24 @@ void
 mpz_addmul (mpz_ptr w, mpz_srcptr u, mpz_srcptr v)
 {
   mpz_aorsmul (w, u, v, (mp_size_t) 0);
+  #if WOOPING
+  WOOP(w) = ((__uint128_t)WOOP(w) + WOOP(u) * WOOP(v)) % WOOPB(u); 
+  #endif
 }
 
 void
 mpz_submul (mpz_ptr w, mpz_srcptr u, mpz_srcptr v)
 {
   mpz_aorsmul (w, u, v, (mp_size_t) -1);
+  #if WOOPING
+  mp_limb_signed_t mod = 0;
+  // gmp_printf("%lu - %lu * %lu mod %lu\n", WOOP(w), WOOP(u), WOOPB(v), WOOPB(u));
+  mod = ((__int128_t)WOOP(w) - (__int128_t)WOOP(u) * (__int128_t)WOOP(v)) % WOOPB(u);
+  if(mod < 0)
+    mod += WOOPB(u);
+
+  // gmp_printf("%lu\n", WOOP(w)); 
+
+  WOOP(w) = mod; 
+#endif
 }

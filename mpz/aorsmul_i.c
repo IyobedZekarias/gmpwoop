@@ -224,6 +224,9 @@ mpz_addmul_ui (mpz_ptr w, mpz_srcptr x, unsigned long y)
     }
 #endif
   mpz_aorsmul_1 (w, x, (mp_limb_t) y, (mp_size_t) 0);
+  #if WOOPING
+  WOOP(w) = ((__uint128_t)WOOP(w) + WOOP(x) * (y % WOOPB(x))) % WOOPB(x); 
+  #endif
 }
 
 void
@@ -253,4 +256,13 @@ mpz_submul_ui (mpz_ptr w, mpz_srcptr x, unsigned long y)
     }
 #endif
   mpz_aorsmul_1 (w, x, (mp_limb_t) y & GMP_NUMB_MASK, (mp_size_t) -1);
+  #if WOOPING
+  mp_limb_signed_t mod = 0;
+  // gmp_printf("%lu - %lu * %lu mod %lu\n", WOOP(w), WOOP(x), y % WOOPB(x), WOOPB(x));
+  mod = ((__int128_t)WOOP(w) - (__int128_t)WOOP(x) * (__int128_t)(y % WOOPB(x))) % WOOPB(x);
+  if(mod < 0)
+    mod += WOOPB(x); 
+  
+  WOOP(w) = mod; 
+#endif
 }

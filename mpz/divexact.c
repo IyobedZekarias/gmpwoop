@@ -85,5 +85,17 @@ mpz_divexact (mpz_ptr quot, mpz_srcptr num, mpz_srcptr den)
 
   SIZ(quot) = (SIZ(num) ^ SIZ(den)) >= 0 ? qn : -qn;
 
+#if WOOPING
+  ASSERT(WOOPB(num) == WOOPB(den));
+  WOOP(quot) = mpz_get_woopval(PTR(quot), SIZ(quot), WOOPB(num));
+  WOOPB(quot) = WOOPB(num);
+  // printf("test: %d\n", ((mp_limb_t)(((__uint128_t)WOOP(quot) * (__uint128_t)denwoop + (__uint128_t)WOOP(rem)) % WOOPB(num)) == numwoop % WOOPB(num)));
+#if GMP_NUMB_BITS == 64
+  ASSERT((mp_limb_t)(((__uint128_t)WOOP(quot) * (__uint128_t)WOOP(den)) % WOOPB(num)) == WOOP(num) % WOOPB(num));
+#else
+  ASSERT((mp_limb_t)(((uint64_t)WOOP(quot) * (uint64_t)WOOP(den)) % WOOPB(num)) == WOOP(num) % WOOPB(num));
+#endif
+#endif
+
   TMP_FREE;
 }

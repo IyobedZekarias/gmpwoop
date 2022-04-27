@@ -59,10 +59,10 @@ FUNCTION (mpz_ptr w, mpz_srcptr u, unsigned long int vval)
 #if WOOPING
 #ifdef OPERATION_add_ui
   // gmp_printf("%lu, %lu, %lu\n", WOOP(w), vval, WOOPB(u)); 
-  WOOP(w) = (mp_limb_t)((__uint128_t)WOOP(u) + WOOPB(u)) % WOOPB(u);
+  WOOP(w) = ((__uint128_t)WOOP(u) + (vval % WOOPB(u))) % WOOPB(u);
 #endif
 #ifdef OPERATION_sub_ui
-  signed long mod = ((signed long)WOOP(u) - ((signed long)vval % WOOPB(u))) % (signed long)WOOPB(u);
+  mp_limb_signed_t mod = ((__int128_t)WOOP(u) - (__int128_t)(vval % WOOPB(u))) % WOOPB(u);
   if (mod < 0)
     mod += WOOPB(u);
 

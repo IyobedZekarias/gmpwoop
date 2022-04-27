@@ -51,4 +51,11 @@ mpz_abs (mpz_ptr w, mpz_srcptr u)
     }
 
   SIZ (w) = size;
+
+#if WOOPING
+  if(SIZ(u) > 0)
+    WOOP(w) = WOOP(u); 
+  else
+    WOOP(w) = WOOPB(u) - WOOP(u); 
+#endif
 }

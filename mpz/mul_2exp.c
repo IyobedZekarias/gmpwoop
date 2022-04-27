@@ -31,6 +31,25 @@ see https://www.gnu.org/licenses/.  */
 
 #include "gmp-impl.h"
 
+mp_limb_t expmod(mp_limb_t y, mp_limb_t p)
+{
+  mp_limb_t res = 1;
+
+  mp_limb_t x = 2 % p; 
+
+  if (x == 0)
+    return 0;
+
+  while (y > 0)
+  {
+    if (y & 1)
+      res = (res * x) % p;
+    y = y >> 1; 
+    x = (x * x) % p;
+  }
+  return res;
+}
+
 void
 mpz_mul_2exp (mpz_ptr r, mpz_srcptr u, mp_bitcnt_t cnt)
 {
@@ -69,4 +88,7 @@ mpz_mul_2exp (mpz_ptr r, mpz_srcptr u, mp_bitcnt_t cnt)
     }
 
   SIZ(r) = SIZ(u) >= 0 ? rn : -rn;
+#if WOOPING
+  WOOP(r) = ((WOOP(u) % WOOPB(u)) * expmod(cnt, WOOPB(u))) % WOOPB(u);
+#endif
 }
