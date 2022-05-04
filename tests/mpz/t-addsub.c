@@ -30,6 +30,7 @@ void dump_abort (int, const char *, mpz_t, mpz_t);
 int
 main (int argc, char **argv)
 {
+  printf("hello\n");
   mpz_t op1, op2, r1, r2;
   mp_size_t op1n, op2n;
   unsigned long int op2long;
@@ -43,7 +44,8 @@ main (int argc, char **argv)
   rands = RANDS;
 
   #if WOOPING
-  mpz_initwb (0, bs);
+  mp_limb_t wbase = mpz_gen_woopbase(); 
+  mpz_initwb (wbase, bs);
   #else
   mpz_init (bs);
   #endif
@@ -52,10 +54,10 @@ main (int argc, char **argv)
      reps = atoi (argv[1]);
 
   #if WOOPING
-  mpz_initwb (0, op1);
-  mpz_initwb (0, op2);
-  mpz_initwb (0, r1);
-  mpz_initwb (0, r2);
+  mpz_initwb (wbase, op1);
+  mpz_initwb (wbase, op2);
+  mpz_initwb (wbase, r1);
+  mpz_initwb (wbase, r2);
   #else
   mpz_init (op1);
   mpz_init (op2);
