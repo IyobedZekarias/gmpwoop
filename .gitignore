@@ -1808,6 +1808,7 @@ libtool
 !tests/mpz/t-io_raw.c
 !tests/mpz/t-divis_2exp.c
 !tests/mpz/t-get_d_2exp.c
+!tests/mpz/t-woop.c
 !tests/tests.h
 !tests/mpf/t-set.c
 !tests/mpf/t-dm2exp.c
