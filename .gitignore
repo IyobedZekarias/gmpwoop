@@ -1,65 +1,3 @@
-.libs/
-*
-# Prerequisites
-*.d
-*.h
-*.csv
-*.tmp
-Makefile
-config.log
-config.m4
-config.status
-tune/sqr_basecase.c
-libtool
-
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
-*.md
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-*.asm
-
-
 !longlong.h
 !COPYING.LESSERv3
 !acinclude.m4
@@ -2162,3 +2100,65 @@ gen-jacobitab
 gen-psqr
 gen-trialdivtab
 gen-bases
+
+
+.libs/
+*
+# Prerequisites
+*.d
+*.h
+*.csv
+*.tmp
+Makefile
+config.log
+config.m4
+config.status
+tune/sqr_basecase.c
+libtool
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+*.md
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+*.asm
