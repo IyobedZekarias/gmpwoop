@@ -30,7 +30,6 @@ void dump_abort (int, const char *, mpz_t, mpz_t);
 int
 main (int argc, char **argv)
 {
-  printf("hello\n");
   mpz_t op1, op2, r1, r2;
   mp_size_t op1n, op2n;
   unsigned long int op2long;
