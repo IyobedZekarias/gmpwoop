@@ -995,7 +995,7 @@ t-addsub$(EXEEXT): $(t_addsub_OBJECTS) $(t_addsub_DEPENDENCIES) $(EXTRA_t_addsub
 
 t-woop$(EXEEXT): $(t_woop_OBJECTS) $(t_woop_DEPENDENCIES) $(EXTRA_t_woop_DEPENDENCIES) 
 	@rm -f t-woop$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(t_addsub_OBJECTS) $(t_addsub_LDADD) $(LIBS)
+	$(AM_V_CCLD)$(LINK) $(t_woop_OBJECTS) $(t_woop_LDADD) $(LIBS)
 
 t-aorsmul$(EXEEXT): $(t_aorsmul_OBJECTS) $(t_aorsmul_DEPENDENCIES) $(EXTRA_t_aorsmul_DEPENDENCIES) 
 	@rm -f t-aorsmul$(EXEEXT)

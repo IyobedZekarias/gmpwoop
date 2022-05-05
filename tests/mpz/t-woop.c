@@ -68,12 +68,12 @@ main (int argc, char **argv)
 
     printf("add ui passed\n");
 
-    mpz_neg(ans, ans);
-    mpz_check_woop(ans); 
-    mpz_neg(ans, ans); 
-    mpz_check_woop(ans);
+    // mpz_neg(ans, ans);
+    // mpz_check_woop(ans); 
+    // mpz_neg(ans, ans); 
+    // mpz_check_woop(ans);
 
-    printf("neg passed\n");
+    // printf("neg passed\n");
 
     mpz_addmul(ans, b, c);
     mpz_check_woop(ans);
